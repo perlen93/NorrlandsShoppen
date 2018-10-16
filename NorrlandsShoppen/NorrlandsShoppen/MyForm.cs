@@ -14,7 +14,7 @@ namespace NorrlandsShoppen
         public MyForm()
         //två olika sätt att göra det på antingen list, eller listview
         {
-            string path = @"C:/Users/perle/source/repos/NorrlandsShoppen/NorrlandsShoppen/TextFile1.txt"; // C:\Users\Viktor\source\repos\Projektarbete\Projektarbete\Shop.txt
+            string path = @"C:\Users\Viktor\source\repos\Projektarbete2\Projektarbete2\Shop.txt"; // C:\Users\Viktor\source\repos\Projektarbete\Projektarbete\Shop.txt
             List<string> items = new List<string>();
             items.Add(File.ReadAllText(path)); //lägger till artikellistan(sökvägen) i listan som heter articles
 
@@ -65,7 +65,7 @@ namespace NorrlandsShoppen
             });
             int numbersOfItems = 0;
             ListBox shoppingCart = new ListBox(); //lista för valen som man valt från articles1
-            foreach (string i in shoppingCart)
+            //foreach (string i in shoppingCart)
             {
                 numbersOfItems = +1; //för att få koll på antal artiklar(till kvittot/eller)
                 //a.Add(articles1); // lägg till den i BoxView SKRIVA UT DEN? 
@@ -128,9 +128,8 @@ namespace NorrlandsShoppen
         {
             //typ summan av (shoppingCart - (det som rabattkoden referar till)) så ska de läggas till i som Pris
             MessageBox.Show("Braaa nu spara du massa para bror!"); //här kan man göra om för att kunna anv discount. Hejsan!
-            
+
         }
-        string "hej!"
     }
 
 
