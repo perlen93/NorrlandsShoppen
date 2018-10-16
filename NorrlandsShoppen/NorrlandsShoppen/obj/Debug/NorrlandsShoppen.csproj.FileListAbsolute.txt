@@ -1,0 +1,7 @@
+C:\Users\perle\source\repos\NorrlandsShoppen\NorrlandsShoppen\bin\Debug\NorrlandsShoppen.exe.config
+C:\Users\perle\source\repos\NorrlandsShoppen\NorrlandsShoppen\bin\Debug\NorrlandsShoppen.exe
+C:\Users\perle\source\repos\NorrlandsShoppen\NorrlandsShoppen\bin\Debug\NorrlandsShoppen.pdb
+C:\Users\perle\source\repos\NorrlandsShoppen\NorrlandsShoppen\obj\Debug\NorrlandsShoppen.csprojAssemblyReference.cache
+C:\Users\perle\source\repos\NorrlandsShoppen\NorrlandsShoppen\obj\Debug\NorrlandsShoppen.csproj.CoreCompileInputs.cache
+C:\Users\perle\source\repos\NorrlandsShoppen\NorrlandsShoppen\obj\Debug\NorrlandsShoppen.exe
+C:\Users\perle\source\repos\NorrlandsShoppen\NorrlandsShoppen\obj\Debug\NorrlandsShoppen.pdb

@@ -1,0 +1,15 @@
+﻿1 Norrsken, 89, För enbart 89 kronor per timma får du tillgång till Norrbotten kanske häftigaste ljusspel, vars du än är i världen. Visas lokalt på din stjärnhimmel
+2 Bastuflotte, 750, Njut av vattnet i värmen, på en flotte har du tilgång till bastu,grill musik, och matavdelning.
+3 Kurs i Dialekter, 2500, Lär dig prata som en infödd för en äkta upplevese.
+4 Riktig kyla, 201, Man vet att man lever när det är kallt. Lägsta köldgaranti: -36,9 celsius. Rekomenderad klädsel: långkalsonger, toppluva
+5 Värme, 10, Överlev med lite äkta värme! Här upplever du värmare breddgrader, i klass med Dubai, garanti på 14,5 är 
+
+6 Ren, 899, Fantastiska djur, vid köp krävs vettig-ägar-intyg
+7 Skoter, 890, Behöver du handla? Skjutsa barnen? Eller kanske ta dig nånstans på vinterhalvåret? Då är detta alternativet för dig!
+8 Älg, 101, Fantastiska djur, vid köp krävs vettig-ägar-intyg
+9 Norrlands-snö, 10, Klart grabben ska ha snö! Med denna förstklassiga snö kan du bygga många snögubbar med
+10 Norrland t-shirt, 200, Prima passform
+11 Hembränt, 500, Äkta hembränt i 5L dunk
+12 Spark, 300, Fantastisk bra färdmedel, alltid nära tillhands. Se upp för grus.
+13 Surströmmning, 34, Vällagrad fisk från norrbottenskusten med doftupplevelse utan dess like.
+14 Löjrom, 3000, Norrbottens guld. 
