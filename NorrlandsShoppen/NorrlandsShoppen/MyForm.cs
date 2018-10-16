@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Collections.Generic;
@@ -12,16 +12,16 @@ namespace NorrlandsShoppen
     class MyForm : Form
     {
         public MyForm()
-            //två olika sätt att göra det på antingen list, eller listview
+        //två olika sätt att göra det på antingen list, eller listview
         {
-            string path = @"C:/Users/perle/source/repos/NorrlandsShoppen/NorrlandsShoppen/TextFile1.txt";
+            string path = @"C:/Users/perle/source/repos/NorrlandsShoppen/NorrlandsShoppen/TextFile1.txt"; // C:\Users\Viktor\source\repos\Projektarbete\Projektarbete\Shop.txt
             List<string> items = new List<string>();
             items.Add(File.ReadAllText(path)); //lägger till artikellistan(sökvägen) i listan som heter articles
-                        
 
-           // List<string> shoppingcart = new List<string>(); //för att ha en varukorg som de kan fara i
-           // ListBox shoppingCart= new ListBox();
-           
+
+            // List<string> shoppingcart = new List<string>(); //för att ha en varukorg som de kan fara i
+            // ListBox shoppingCart= new ListBox();
+
 
             TableLayoutPanel panel = new TableLayoutPanel
             {
@@ -49,7 +49,7 @@ namespace NorrlandsShoppen
                 Dock = DockStyle.Fill
             });
             ListBox articles1 = new ListBox(); //Lägga alla listbox i en innerpanel för att de ska ändra strlk när man ändrar strkl på fönstret. inner panel måste ha docksytle.fill
-           
+
             //Hur lägga till filen m artiklarna i ListView??
             foreach (string a in items)
             {
@@ -79,8 +79,8 @@ namespace NorrlandsShoppen
                 Dock = DockStyle.Fill
             });
             ListBox aboutArticle = new ListBox(); //box för att printa ut info o bild om det man väljer
-                       
-            
+
+
             panel.Controls.Add(new TextBox
             {
                 Text = "Please enter discount code here",
@@ -90,7 +90,7 @@ namespace NorrlandsShoppen
 
             Button discButton = new Button
             {
-                Text = "USE DISCOUNT", 
+                Text = "USE DISCOUNT",
                 BackColor = Color.Pink,
                 Dock = DockStyle.Fill
             };
@@ -110,7 +110,7 @@ namespace NorrlandsShoppen
                 BackColor = Color.Orange,
                 Dock = DockStyle.Fill
             };
-           
+
             panel.Controls.Add(discButton);
             panel.Controls.Add(buyButton);
             panel.Controls.Add(articles1);
@@ -118,7 +118,7 @@ namespace NorrlandsShoppen
             panel.Controls.Add(aboutArticle);
             panel.Controls.Add(summa);
             Controls.Add(panel);
-            
+
         }
         private void ClickedEventHandler(object sender, EventArgs e)
         {
@@ -127,13 +127,14 @@ namespace NorrlandsShoppen
         private void ClickedDiscountButton(object sender, EventArgs e)
         {
             //typ summan av (shoppingCart - (det som rabattkoden referar till)) så ska de läggas till i som Pris
-            MessageBox.Show("Braaa nu spara du massa para bror!"); //här kan man göra om för att kunna anv discount
+            MessageBox.Show("Braaa nu spara du massa para bror!"); //här kan man göra om för att kunna anv discount. Hejsan!
+            
         }
     }
 
-    
-    }
 
-    
+}
+
+
 
 
