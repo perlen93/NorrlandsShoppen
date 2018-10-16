@@ -130,6 +130,7 @@ namespace NorrlandsShoppen
             MessageBox.Show("Braaa nu spara du massa para bror!"); //här kan man göra om för att kunna anv discount. Hejsan!
             int test = 10: :PP hjo
         }
+        string "hej!"
     }
 
     
