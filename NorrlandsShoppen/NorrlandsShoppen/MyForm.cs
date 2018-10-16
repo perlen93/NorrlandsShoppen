@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Collections.Generic;
@@ -127,7 +127,8 @@ namespace NorrlandsShoppen
         private void ClickedDiscountButton(object sender, EventArgs e)
         {
             //typ summan av (shoppingCart - (det som rabattkoden referar till)) så ska de läggas till i som Pris
-            MessageBox.Show("Braaa nu spara du massa para bror!"); //här kan man göra om för att kunna anv discount
+            MessageBox.Show("Braaa nu spara du massa para bror!"); //här kan man göra om för att kunna anv discount. Hejsan!
+            int test = 10: :PP hjo
         }
     }
 
