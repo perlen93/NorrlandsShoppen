@@ -8,7 +8,14 @@ using System.Threading.Tasks;
 using System.IO;
 
 namespace NorrlandsShoppen
-{
+{ class Product
+    {
+        string Name;
+        string Description;
+        int Number;
+        int Price;
+    };
+
     class MyForm : Form
     {
         public MyForm()
@@ -17,13 +24,25 @@ namespace NorrlandsShoppen
             string path = @"C:/Users/perle/source/repos/NorrlandsShoppen/NorrlandsShoppen/TextFile1.txt"; // C:\Users\Viktor\source\repos\Projektarbete\Projektarbete\Shop.txt
             List<string> items = new List<string>();
             items.Add(File.ReadAllText(path)); //lägger till artikellistan(sökvägen) i listan som heter articles
+                                               //Hur lägga till filen m artiklarna i itemsList??
+                                               // Vi har gjort detta förut,här behöver de komma ngt som tar varje rads i textfilen första del(separerat m komma, o lägger det i en lista o displayar det i itemList
+            foreach (string line in items)
+            {
+                string[] values = line.Split(',');
+                Product p = new Product
+                {
+                    Name = values[1],
+                    Description = values[2],
+                    Serial = values[0],
+                    Price = int.Parse(values[3])
+                };
 
 
-            // List<string> shoppingcart = new List<string>(); //för att ha en varukorg som de kan fara i
-            // ListBox shoppingCart= new ListBox();
+                // List<string> shoppingcart = new List<string>(); //för att ha en varukorg som de kan fara i
+                // ListBox shoppingCart= new ListBox();
 
 
-            TableLayoutPanel panel = new TableLayoutPanel
+                TableLayoutPanel panel = new TableLayoutPanel
             {
                 RowCount = 6,
                 ColumnCount = 3,
@@ -47,14 +66,23 @@ namespace NorrlandsShoppen
                 TextAlign = ContentAlignment.TopCenter,
                 BackColor = Color.LightPink,
                 Dock = DockStyle.Fill
-            });
-            ListBox articles1 = new ListBox(); //Lägga alla listbox i en innerpanel för att de ska ändra strlk när man ändrar strkl på fönstret. inner panel måste ha docksytle.fill
 
-            //Hur lägga till filen m artiklarna i ListView??
-            foreach (string a in items)
+
+            });
+            ListBox itemsList = new ListBox(); //Lägga alla listbox i en innerpanel för att de ska ändra strlk när man ändrar strkl på fönstret. inner panel måste ha docksytle.fill
+            foreach(string a in items)
             {
-                //a.Add(articles1); // lägg till den i BoxView SKRIVA UT DEN? 
+                a.Add(itemsList); // lägg till den i BoxView SKRIVA UT DEN? 
             };
+
+            PictureBox pic = new PictureBox();
+            {
+                pic.Size = new Size(210, 110);
+                Controls.Add(pic);
+            }
+
+            
+
 
             panel.Controls.Add(new Label
             {
@@ -65,11 +93,12 @@ namespace NorrlandsShoppen
             });
             int numbersOfItems = 0;
             ListBox shoppingCart = new ListBox(); //lista för valen som man valt från articles1
-            foreach (string i in shoppingCart)
-            {
-                numbersOfItems = +1; //för att få koll på antal artiklar(till kvittot/eller)
-                //a.Add(articles1); // lägg till den i BoxView SKRIVA UT DEN? 
-            };
+            Console.WriteLine("You have " + numbersOfItems + "in your shoppingcart");
+            // foreach (string i in shoppingCart)
+            // {
+            numbersOfItems = +1; //för att få koll på antal artiklar(till kvittot/eller)
+                                 //a.Add(articles1); // lägg till den i BoxView SKRIVA UT DEN? 
+                                 //};
 
             panel.Controls.Add(new Label
             {
@@ -79,6 +108,7 @@ namespace NorrlandsShoppen
                 Dock = DockStyle.Fill
             });
             ListBox aboutArticle = new ListBox(); //box för att printa ut info o bild om det man väljer
+
 
 
             panel.Controls.Add(new TextBox
@@ -113,7 +143,7 @@ namespace NorrlandsShoppen
 
             panel.Controls.Add(discButton);
             panel.Controls.Add(buyButton);
-            panel.Controls.Add(articles1);
+            panel.Controls.Add(itemsList);
             panel.Controls.Add(shoppingCart);
             panel.Controls.Add(aboutArticle);
             panel.Controls.Add(summa);
@@ -128,12 +158,45 @@ namespace NorrlandsShoppen
         {
             //typ summan av (shoppingCart - (det som rabattkoden referar till)) så ska de läggas till i som Pris
             MessageBox.Show("Braaa nu spara du massa para bror!"); //här kan man göra om för att kunna anv discount. Hejsan!
-            
         }
-        string "hej!"
+
+
+        
+        public static System.Drawing.Image FromFile(string filename)
+        {
+           
+            Image bastuflotte = Image.FromFile("c:\\bastuflotte.jpg");
+            Image hembrant = Image.FromFile("c:\\hembrant.jpg");
+            Image kyla = Image.FromFile("c:\\Kyla.jpg");
+            Image norrlandsTröja = Image.FromFile("c:\\norrlandströja.jpg");
+            Image dialekt = Image.FromFile("c:\\Norrländska.jpg");
+            Image norrsken = Image.FromFile("c:\\norrsken.jpg");
+            Image ren = Image.FromFile("c:\\ren.jpg");
+            Image skoter = Image.FromFile("c:\\skoter.jpg");
+            Image snö = Image.FromFile("c:\\snö.jpg");
+            Image värme = Image.FromFile("c:\\värme.jpg");
+            Image älg = Image.FromFile("c:\\älg.jpg");
+           
+
+            return bastuflotte;
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            // Construct an image object from a file in the local directory.
+            // ... This file must exist in the solution.
+            Image image = Image.FromFile("BeigeMonitor1.png");
+            // Set the PictureBox image property to this image.
+            // ... Then, adjust its height and width properties.
+            pictureBox1.Image = image;
+            pictureBox1.Height = image.Height;
+            pictureBox1.Width = image.Width;
+        }
+
+
+
     }
-
-
 }
 
 
