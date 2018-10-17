@@ -11,7 +11,7 @@ namespace NorrlandsShoppen
 { 
     class MyForm : Form
     {
-        private FlowLayoutPanel flow;
+       
 
         private void CreatePicture(string path) // metod för att få fram en bild. anropa bilden:CreatPicture(sökvägen till bilden) !! Omg
         {
@@ -27,8 +27,7 @@ namespace NorrlandsShoppen
 
             public MyForm()
 
-            {
-         
+            {         
               flow = new FlowLayoutPanel
                 {
                     FlowDirection = FlowDirection.LeftToRight,
@@ -36,14 +35,14 @@ namespace NorrlandsShoppen
                 };
                 Controls.Add(flow);
 
-                string[] filenames = Directory.GetFiles("images");
-                foreach (string name in filenames)
+                string[] filenames = Directory.GetFiles("images"); // samlar den i en array som heter filenames från mappen images
+                foreach (string name in filenames) //för varje namn i arrayen filenames
                 {
-                    CreatePicture(name);
+                    CreatePicture(name);//skapa bilden
                 }
 
                 string path = @"C:/Users/perle/source/repos/NorrlandsShoppen/NorrlandsShoppen/TextFile1.txt"; // C:\Users\Viktor\source\repos\Projektarbete\Projektarbete\Shop.txt
-            List<string> items = new List<string>();
+            List<string> items = new List<string>{};
             items.Add(File.ReadAllText(path)); //lägger till artikellistan(sökvägen) i listan som heter articles
                                                //Hur lägga till filen m artiklarna i itemsList??
                                                // Vi har gjort detta förut,här behöver de komma ngt som tar varje rads i textfilen första del(separerat m komma, o lägger det i en lista o displayar det i itemList
@@ -205,9 +204,7 @@ namespace NorrlandsShoppen
                 //pictureBox1.Height = image.Height;
                 //pictureBox1.Width = image.Width;
             }
-
-
-
+                
         }
     } 
 
