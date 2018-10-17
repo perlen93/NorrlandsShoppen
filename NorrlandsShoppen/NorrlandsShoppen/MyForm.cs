@@ -20,27 +20,21 @@ namespace NorrlandsShoppen
     {
         public MyForm()
         //två olika sätt att göra det på antingen list, eller listview
-        {
-            string path = @"C:/Users/perle/source/repos/NorrlandsShoppen/NorrlandsShoppen/TextFile1.txt"; // C:\Users\Viktor\source\repos\Projektarbete\Projektarbete\Shop.txt
+        {   string path = @"C:/Users/perle/source/repos/NorrlandsShoppen/NorrlandsShoppen/TextFile1.txt"; // C:\Users\Viktor\source\repos\Projektarbete\Projektarbete\Shop.txt
+            
             List<string> items = new List<string>();
             items.Add(File.ReadAllText(path)); //lägger till artikellistan(sökvägen) i listan som heter articles
-                                               //Hur lägga till filen m artiklarna i itemsList??
-                                               // Vi har gjort detta förut,här behöver de komma ngt som tar varje rads i textfilen första del(separerat m komma, o lägger det i en lista o displayar det i itemList
-            foreach (string line in items)
+            
+            foreach (string line in items) // för att ta varje rad i items(artikellistan) o splittar så de blir en separat sträng där vi lagt ett ,
             {
-                string[] values = line.Split(',');
-                Product p = new Product
-                {
-                    Name = values[1],
-                    Description = values[2],
-                    Serial = values[0],
-                    Price = int.Parse(values[3])
-                };
-
+                string[] values = line.Split(','); //Vad innebär/är valuies?
+                items.Add(line);
+            }
 
                 // List<string> shoppingcart = new List<string>(); //för att ha en varukorg som de kan fara i
                 // ListBox shoppingCart= new ListBox();
 
+            
 
                 TableLayoutPanel panel = new TableLayoutPanel
             {
