@@ -11,44 +11,47 @@ namespace NorrlandsShoppen
 {
     class MyForm : Form
     {
+
         public MyForm()
-        //två olika sätt att göra det på antingen list, eller listview
+        
         {
+            string[] filenames = Directory.GetFiles("images"); // samlar den i en array som heter filenames från mappen images
+            foreach (string name in filenames) //för varje namn i arrayen filenames
+            {
+                CreatePicture(name);//skapa bilden
+            }
             string path = @"C:\Users\Viktor\source\repos\Projektarbete2\Projektarbete2\Shop.txt"; // C:\Users\Viktor\source\repos\Projektarbete\Projektarbete\Shop.txt
             List<string> items = new List<string>();
-            items.Add(File.ReadAllText(path)); //lägger till artikellistan(sökvägen) i listan som heter articles
+            items.Add(File.ReadAllText(path)); 
 
-
-            // List<string> shoppingcart = new List<string>(); //för att ha en varukorg som de kan fara i
-            // ListBox shoppingCart= new ListBox();
-
-
-            TableLayoutPanel panel = new TableLayoutPanel
+            
+            ;
+            TableLayoutPanel table = new TableLayoutPanel
             {
-                RowCount = 6,
-                ColumnCount = 3,
-                BackColor = Color.Black,
-                Dock = DockStyle.Fill
+                RowCount = 3,
+               ColumnCount = 3,
+                BackColor = Color.Orange,
+                Dock = DockStyle.Fill,
+                
             };
 
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
+            table.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
+            table.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
+            table.RowStyles.Add(new RowStyle(SizeType.Percent, 33));
 
 
-            panel.Controls.Add(new Label
+
+            Label things = new Label
             {
                 Text = "Items", //Detta blir typ rubriken över listboxen med artiklar
                 TextAlign = ContentAlignment.TopCenter,
-                BackColor = Color.LightPink,
-                Dock = DockStyle.Fill
-            });
-            ListBox articles1 = new ListBox(); //Lägga alla listbox i en innerpanel för att de ska ändra strlk när man ändrar strkl på fönstret. inner panel måste ha docksytle.fill
+                BackColor = Color.Green,
+
+            };
+            ListBox articles = new ListBox(); //Lägga alla listbox i en innerpanel för att de ska ändra strlk när man ändrar strkl på fönstret. inner panel måste ha docksytle.fill
 
             //Hur lägga till filen m artiklarna i ListView??
             foreach (string a in items)
@@ -56,14 +59,17 @@ namespace NorrlandsShoppen
                 //a.Add(articles1); // lägg till den i BoxView SKRIVA UT DEN? 
             };
 
-            panel.Controls.Add(new Label
+            Label cart = new Label
             {
+                
                 Text = "Shopping Cart", //Detta blir typ rubriken över listboxen med valda artiklar
                 TextAlign = ContentAlignment.TopCenter,
-                BackColor = Color.LightPink,
-                Dock = DockStyle.Fill
-            });
+                BackColor = Color.Green,
+                
+
+            };
             int numbersOfItems = 0;
+
             ListBox shoppingCart = new ListBox(); //lista för valen som man valt från articles1
             //foreach (string i in shoppingCart)
             {
@@ -71,28 +77,38 @@ namespace NorrlandsShoppen
                 //a.Add(articles1); // lägg till den i BoxView SKRIVA UT DEN? 
             };
 
-            panel.Controls.Add(new Label
+            Label addItem = new Label
             {
                 Text = "About your item;", //Detta blir typ rubriken över listboxen med information om varan
-                TextAlign = ContentAlignment.TopCenter,
-                BackColor = Color.LightPink,
-                Dock = DockStyle.Fill
-            });
-            ListBox aboutArticle = new ListBox(); //box för att printa ut info o bild om det man väljer
+
+                BackColor = Color.Green,
+                AutoSize = true,
+                
 
 
-            panel.Controls.Add(new TextBox
+            };
+
+
+            ListBox aboutItem = new ListBox();//box för att printa ut info o bild om det man väljer
+            aboutItem.Size = new Size(200, 200);
+            aboutItem.BackColor = Color.Black;
+
+
+            TextBox Discount = new TextBox
             {
                 Text = "Please enter discount code here",
-                BackColor = Color.Red,
-                Dock = DockStyle.Fill
-            });
+                BackColor = Color.AntiqueWhite,
+                Dock = DockStyle.Fill,
+               
+                
+            };
 
             Button discButton = new Button
             {
                 Text = "USE DISCOUNT",
                 BackColor = Color.Pink,
                 Dock = DockStyle.Fill
+
             };
             discButton.Click += ClickedDiscountButton;
 
@@ -101,23 +117,32 @@ namespace NorrlandsShoppen
                 Text = "BUY",
                 BackColor = Color.Yellow,
                 Dock = DockStyle.Fill
+
             };
             buyButton.Click += ClickedEventHandler;
 
             Label summa = new Label
             {
                 Text = "Total sum of pruchase:",
-                BackColor = Color.Orange,
+                BackColor = Color.White,
                 Dock = DockStyle.Fill
             };
 
-            panel.Controls.Add(discButton);
-            panel.Controls.Add(buyButton);
-            panel.Controls.Add(articles1);
-            panel.Controls.Add(shoppingCart);
-            panel.Controls.Add(aboutArticle);
-            panel.Controls.Add(summa);
-            Controls.Add(panel);
+            table.Controls.Add(discButton);
+            table.Controls.Add(buyButton);
+            table.Controls.Add(articles);
+            table.Controls.Add(shoppingCart);
+            table.Controls.Add(aboutItem);
+            table.Controls.Add(summa);
+            table.Controls.Add(Discount);
+            articles.Controls.Add(things);
+            shoppingCart.Controls.Add(cart);
+            aboutItem.Controls.Add(addItem);
+            table.Controls.Add(box1);
+
+
+            Controls.Add(table);
+            
 
         }
         private void ClickedEventHandler(object sender, EventArgs e)
@@ -130,6 +155,30 @@ namespace NorrlandsShoppen
             MessageBox.Show("Braaa nu spara du massa para bror!"); //här kan man göra om för att kunna anv discount. Hejsan!
 
         }
+
+        public void CreatePicture(string path) // metod för att få fram en bild. anropa bilden:CreatPicture(sökvägen till bilden) !! Omg
+        {
+            PictureBox box1 = new PictureBox
+            {
+                Image = Image.FromFile(path),
+                SizeMode = PictureBoxSizeMode.StretchImage,
+                Width = 150,
+                Height = 150
+            };
+
+        }
+
+        //public FlowLayoutPanel panel = new FlowLayoutPanel
+        //{
+
+        //    BackColor = Color.Orange,
+        //    Dock = DockStyle.Fill,
+        //    AutoSize = true,
+
+
+        //    };
+
+
     }
 
 
