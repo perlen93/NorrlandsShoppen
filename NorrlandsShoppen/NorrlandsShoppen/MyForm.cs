@@ -22,47 +22,58 @@ namespace NorrlandsShoppen
                 Width = 150,
                 Height = 150
             };
-            flow.Controls.Add(box1);
+          //flow.Controls.Add(box1); fick error på flow "do not exist"
         }
 
-            public MyForm()
+        public MyForm()
+        {
 
-            {         
-              flow = new FlowLayoutPanel
-                {
-                    FlowDirection = FlowDirection.LeftToRight,
-                    Dock = DockStyle.Fill
-                };
-                Controls.Add(flow);
+            FlowLayoutPanel flow = new FlowLayoutPanel
+            {
+                FlowDirection = FlowDirection.LeftToRight,
+                Dock = DockStyle.Fill
+            };
+            Controls.Add(flow);
 
-                string[] filenames = Directory.GetFiles("images"); // samlar den i en array som heter filenames från mappen images
-                foreach (string name in filenames) //för varje namn i arrayen filenames
-                {
-                    CreatePicture(name);//skapa bilden
-                }
+            string[] filenames = Directory.GetFiles("images"); // samlar den i en array som heter filenames från mappen images
+            foreach (string name in filenames) //för varje namn i arrayen filenames
+            {
+                CreatePicture(name);//skapa bilden
+            }
 
-                string path = @"C:/Users/perle/source/repos/NorrlandsShoppen/NorrlandsShoppen/TextFile1.txt"; // C:\Users\Viktor\source\repos\Projektarbete\Projektarbete\Shop.txt
-            List<string> items = new List<string>{};
+            string path = @"C:/Users/perle/source/repos/NorrlandsShoppen/NorrlandsShoppen/TextFile1.txt"; // C:\Users\Viktor\source\repos\Projektarbete\Projektarbete\Shop.txt
+            List<string> items = new List<string> { };
             items.Add(File.ReadAllText(path)); //lägger till artikellistan(sökvägen) i listan som heter articles
-                                               //Hur lägga till filen m artiklarna i itemsList??
-                                               // Vi har gjort detta förut,här behöver de komma ngt som tar varje rads i textfilen första del(separerat m komma, o lägger det i en lista o displayar det i itemList
+                                                       
+            ListBox itemsList = new ListBox(); //Listbox för att visa artiklarna, hur få in listan i listboxen?
+            foreach (string line in items)
+            {
+                string[] separatedItems = line.Split(',');
 
-            ListBox itemsList = new ListBox(); //Lägga alla listbox i en innerpanel för att de ska ändra strlk när man ändrar strkl på fönstret. inner panel måste ha docksytle.fill
-                                               //foreach (string a in items)
-                                               //{
-                                               //  a.Add(itemsList); // lägg till den i BoxView SKRIVA UT DEN? 
-                                               //};
-            //foreach (string line in items)
-            //{
-            //    string[] values = line.Split(',');
-            //    itemsList.Add(line);
-            //}
+                for (int i = 0; i <= separatedItems.Length; i++)
+                {
+                    separatedItems[i] = "Item" + i;
+                }
+                itemsList.Items.AddRange(separatedItems);
 
-                // List<string> shoppingcart = new List<string>(); //för att ha en varukorg som de kan fara i
-                // ListBox shoppingCart= new ListBox();
+            }
+            int numbersOfItems = 0; //för att få koll på antal artiklar(till kvittot/eller)
+            List<string> shoppingCartList = new List<string> { }; //för att ha en varukorg som de kan fara i
 
+            ListBox shoppingCartBox = new ListBox(); //för att visa de man lagt till shoppingcart i en box för anv.
+            foreach (string line in shoppingCartList)
+            {
+                string[] separatedItems = line.Split(',');
+                for (int i = 0; i <= separatedItems.Length; i++)  //för varje char i speareradeitemslistan(strängarna) så ska de add to shoppingcartbox 
+                {
+                    separatedItems[i] = "Item" + i;
+                }
+                shoppingCartBox.Items.AddRange(separatedItems);
+                numbersOfItems = +1;//för att få koll på antal artiklar(till kvittot/eller)
+            }
+            Console.WriteLine("You have " + numbersOfItems + "in your shoppingcart");
 
-                TableLayoutPanel panel = new TableLayoutPanel
+            TableLayoutPanel panel = new TableLayoutPanel
                 {
                     RowCount = 6,
                     ColumnCount = 3,
@@ -70,45 +81,44 @@ namespace NorrlandsShoppen
                     Dock = DockStyle.Fill
                 };
 
-                panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-                panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-                panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-                panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-                panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
-                panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
-                panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
-                panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
-
-
-                panel.Controls.Add(new Label
-                {
-                    Text = "Items", //Detta blir typ rubriken över listboxen med artiklar
-                    TextAlign = ContentAlignment.TopCenter,
-                    BackColor = Color.LightPink,
-                    Dock = DockStyle.Fill
-                });
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
+            
+            panel.Controls.Add(new Label
+              {
+                   Text = "Items", //Detta blir typ rubriken över listboxen med artiklar
+                   TextAlign = ContentAlignment.TopCenter,
+                   BackColor = Color.LightPink,
+                   Dock = DockStyle.Fill
+              });
               
-                PictureBox pic = new PictureBox();
-                {
-                    pic.Size = new Size(210, 110);
-                    Controls.Add(pic);
-                }
+            PictureBox pic = new PictureBox();
+              {
+                  pic.Size = new Size(210, 110);
+                  Controls.Add(pic);
+              }
 
 
-                panel.Controls.Add(new Label
+            panel.Controls.Add(new Label
                 {
                     Text = "Shopping Cart", //Detta blir typ rubriken över listboxen med valda artiklar
                     TextAlign = ContentAlignment.TopCenter,
                     BackColor = Color.LightPink,
                     Dock = DockStyle.Fill
                 });
-                int numbersOfItems = 0;
-                ListBox shoppingCart = new ListBox(); //lista för valen som man valt från articles1
-                Console.WriteLine("You have " + numbersOfItems + "in your shoppingcart");
 
-                numbersOfItems = +1; //för att få koll på antal artiklar(till kvittot/eller)
-                                     //a.Add(articles1); // lägg till den i BoxView SKRIVA UT DEN? 
-                                     //};
+            
+              
+              
+
+                
+                                  
 
                 panel.Controls.Add(new Label
                 {
@@ -154,7 +164,7 @@ namespace NorrlandsShoppen
                 panel.Controls.Add(discButton);
                 panel.Controls.Add(buyButton);
                 panel.Controls.Add(itemsList);
-                panel.Controls.Add(shoppingCart);
+                panel.Controls.Add(shoppingCartBox);
                 panel.Controls.Add(aboutArticle);
                 panel.Controls.Add(summa);
                 panel.Controls.Add(pic);
@@ -173,7 +183,7 @@ namespace NorrlandsShoppen
 
 
 
-            static System.Drawing.Image FromFile(string filename)
+            static System.Drawing.Image FromFile(string filename) // oklart om detta ens behöver vara med? 
             {
 
                 Image bastuflotte = Image.FromFile("c:\\bastuflotte.jpg");
