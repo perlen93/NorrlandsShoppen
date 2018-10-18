@@ -11,6 +11,9 @@ namespace NorrlandsShoppen
 { 
     class MyForm : Form
     {
+          // Lägger till denna som instans så att alla ovasett om man är i main/myform eller i en metod kan använda den.
+        TableLayoutPanel table;
+        
         public MyForm()
         {
             FlowLayoutPanel flow = new FlowLayoutPanel
