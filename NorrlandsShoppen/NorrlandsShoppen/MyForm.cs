@@ -11,23 +11,8 @@ namespace NorrlandsShoppen
 { 
     class MyForm : Form
     {
-       
-
-        private void CreatePicture(string path) // metod för att få fram en bild. anropa bilden:CreatPicture(sökvägen till bilden) !! Omg
-        {
-            PictureBox box1 = new PictureBox
-            {
-                Image = Image.FromFile(path),
-                SizeMode = PictureBoxSizeMode.StretchImage,
-                Width = 150,
-                Height = 150
-            };
-          //flow.Controls.Add(box1); fick error på flow "do not exist"
-        }
-
         public MyForm()
         {
-
             FlowLayoutPanel flow = new FlowLayoutPanel
             {
                 FlowDirection = FlowDirection.LeftToRight,
@@ -35,17 +20,23 @@ namespace NorrlandsShoppen
             };
             Controls.Add(flow);
 
-            string[] filenames = Directory.GetFiles("images"); // samlar den i en array som heter filenames från mappen images
-            foreach (string name in filenames) //för varje namn i arrayen filenames
+            // Samlar bilderna i en array som heter filenames från mappen images
+            string[] filenames = Directory.GetFiles("images");
+            // För varje namn i arrayen filenames
+            foreach (string name in filenames)
             {
-                CreatePicture(name);//skapa bilden
+                // Skapa bilden
+                CreatePicture(name);
             }
 
-            string path = @"C:/Users/perle/source/repos/NorrlandsShoppen/NorrlandsShoppen/TextFile1.txt"; // C:\Users\Viktor\source\repos\Projektarbete\Projektarbete\Shop.txt
+            // C:\Users\Viktor\source\repos\Projektarbete\Projektarbete\Shop.txt
+            string path = @"C:/Users/perle/source/repos/NorrlandsShoppen/NorrlandsShoppen/TextFile1.txt";
             List<string> items = new List<string> { };
-            items.Add(File.ReadAllText(path)); //lägger till artikellistan(sökvägen) i listan som heter articles
-                                                       
-            ListBox itemsList = new ListBox(); //Listbox för att visa artiklarna, hur få in listan i listboxen?
+            // Lägger till artikellistan(sökvägen) i listan som heter articles
+            items.Add(File.ReadAllText(path)); 
+
+            // Listbox för att visa artiklarna, hur få in listan i listboxen?
+            ListBox itemsList = new ListBox();
             foreach (string line in items)
             {
                 string[] separatedItems = line.Split(',');
@@ -57,29 +48,35 @@ namespace NorrlandsShoppen
                 itemsList.Items.AddRange(separatedItems);
 
             }
-            int numbersOfItems = 0; //för att få koll på antal artiklar(till kvittot/eller)
-            List<string> shoppingCartList = new List<string> { }; //för att ha en varukorg som de kan fara i
+            // För att få koll på antal artiklar(till kvittot/eller)
+            int numbersOfItems = 0;
 
-            ListBox shoppingCartBox = new ListBox(); //för att visa de man lagt till shoppingcart i en box för anv.
+            // För att ha en varukorg som de kan fara i
+            List<string> shoppingCartList = new List<string> { };
+
+            // För att visa de man lagt till shoppingcart i en box för anv.
+            ListBox shoppingCartBox = new ListBox{};
             foreach (string line in shoppingCartList)
             {
                 string[] separatedItems = line.Split(',');
-                for (int i = 0; i <= separatedItems.Length; i++)  //för varje char i speareradeitemslistan(strängarna) så ska de add to shoppingcartbox 
+                // För varje char i speareradeitemslistan(strängarna) så ska de add to shoppingcartbox 
+                for (int i = 0; i <= separatedItems.Length; i++)  
                 {
                     separatedItems[i] = "Item" + i;
                 }
                 shoppingCartBox.Items.AddRange(separatedItems);
-                numbersOfItems = +1;//för att få koll på antal artiklar(till kvittot/eller)
+                // För att få koll på antal artiklar(till kvittot/eller)
+                numbersOfItems = +1;
             }
             Console.WriteLine("You have " + numbersOfItems + "in your shoppingcart");
 
             TableLayoutPanel panel = new TableLayoutPanel
-                {
-                    RowCount = 6,
-                    ColumnCount = 3,
-                    BackColor = Color.Black,
-                    Dock = DockStyle.Fill
-                };
+            {
+                RowCount = 6,
+                ColumnCount = 3,
+                BackColor = Color.Black,
+                Dock = DockStyle.Fill
+            };
 
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
@@ -89,134 +86,142 @@ namespace NorrlandsShoppen
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
-            
+
+            // Detta blir rubriken över listboxen med artiklar
             panel.Controls.Add(new Label
-              {
-                   Text = "Items", //Detta blir typ rubriken över listboxen med artiklar
-                   TextAlign = ContentAlignment.TopCenter,
-                   BackColor = Color.LightPink,
-                   Dock = DockStyle.Fill
-              });
-              
+            {
+                Text = "Items",
+                TextAlign = ContentAlignment.TopCenter,
+                BackColor = Color.LightPink,
+                Dock = DockStyle.Fill
+            });
+
+            // Detta är rutan för bilden
             PictureBox pic = new PictureBox();
-              {
-                  pic.Size = new Size(210, 110);
-                  Controls.Add(pic);
-              }
+            {
+                pic.Size = new Size(210, 110);
+                Controls.Add(pic);
+            }
 
-
+            // Detta blir typ rubriken över listboxen med valda artiklar
             panel.Controls.Add(new Label
-                {
-                    Text = "Shopping Cart", //Detta blir typ rubriken över listboxen med valda artiklar
-                    TextAlign = ContentAlignment.TopCenter,
-                    BackColor = Color.LightPink,
-                    Dock = DockStyle.Fill
-                });
-
-            
-              
-              
-
-                
-                                  
-
-                panel.Controls.Add(new Label
-                {
-                    Text = "About your item;", //Detta blir typ rubriken över listboxen med information om varan
-                    TextAlign = ContentAlignment.TopCenter,
-                    BackColor = Color.LightPink,
-                    Dock = DockStyle.Fill
-                });
-                ListBox aboutArticle = new ListBox(); //box för att printa ut info o bild om det man väljer
-
-
-
-                panel.Controls.Add(new TextBox
-                {
-                    Text = "Please enter discount code here",
-                    BackColor = Color.Red,
-                    Dock = DockStyle.Fill
-                });
-
-                Button discButton = new Button
-                {
-                    Text = "USE DISCOUNT",
-                    BackColor = Color.Pink,
-                    Dock = DockStyle.Fill
-                };
-                discButton.Click += ClickedDiscountButton;
-
-                Button buyButton = new Button
-                {
-                    Text = "BUY",
-                    BackColor = Color.Yellow,
-                    Dock = DockStyle.Fill
-                };
-                buyButton.Click += ClickedEventHandler;
-
-                Label summa = new Label
-                {
-                    Text = "Total sum of pruchase:",
-                    BackColor = Color.Orange,
-                    Dock = DockStyle.Fill
-                };
-
-                panel.Controls.Add(discButton);
-                panel.Controls.Add(buyButton);
-                panel.Controls.Add(itemsList);
-                panel.Controls.Add(shoppingCartBox);
-                panel.Controls.Add(aboutArticle);
-                panel.Controls.Add(summa);
-                panel.Controls.Add(pic);
-                Controls.Add(panel);
-
-            }
-            void ClickedEventHandler(object sender, EventArgs e)
             {
-                MessageBox.Show("Sådääär då har du köpt en massa"); //här kan man sätta in kvittot? dvs shoppingCart
-            }
-            void ClickedDiscountButton(object sender, EventArgs e)
+                Text = "Shopping Cart",
+                TextAlign = ContentAlignment.TopCenter,
+                BackColor = Color.LightPink,
+                Dock = DockStyle.Fill
+            });
+
+            // Detta blir rubriken över listboxen med information om varan
+            panel.Controls.Add(new Label
+            { 
+                Text = "About your item;",
+                TextAlign = ContentAlignment.TopCenter,
+                BackColor = Color.LightPink,
+                Dock = DockStyle.Fill
+            });
+
+            // Box för att printa ut info o bild om det man väljer
+            ListBox aboutArticle = new ListBox();
+
+            panel.Controls.Add(new TextBox
             {
-                //typ summan av (shoppingCart - (det som rabattkoden referar till)) så ska de läggas till i som Pris
-                MessageBox.Show("Braaa nu spara du massa para bror!"); //här kan man göra om för att kunna anv discount. Hejsan!
-            }
+                Text = "Please enter discount code here",
+                BackColor = Color.Red,
+                Dock = DockStyle.Fill
+            });
 
-
-
-            static System.Drawing.Image FromFile(string filename) // oklart om detta ens behöver vara med? 
+            Button discButton = new Button
             {
+                Text = "USE DISCOUNT",
+                BackColor = Color.Pink,
+                Dock = DockStyle.Fill
+            };
+            discButton.Click += ClickedDiscountButton;
 
-                Image bastuflotte = Image.FromFile("c:\\bastuflotte.jpg");
-                Image hembrant = Image.FromFile("c:\\hembrant.jpg");
-                Image kyla = Image.FromFile("c:\\Kyla.jpg");
-                Image norrlandsTröja = Image.FromFile("c:\\norrlandströja.jpg");
-                Image dialekt = Image.FromFile("c:\\Norrländska.jpg");
-                Image norrsken = Image.FromFile("c:\\norrsken.jpg");
-                Image ren = Image.FromFile("c:\\ren.jpg");
-                Image skoter = Image.FromFile("c:\\skoter.jpg");
-                Image snö = Image.FromFile("c:\\snö.jpg");
-                Image värme = Image.FromFile("c:\\värme.jpg");
-                Image älg = Image.FromFile("c:\\älg.jpg");
-
-
-                return bastuflotte;
-
-            }
-
-            void Form1_Load(object sender, EventArgs e)
+            Button buyButton = new Button
             {
-                // Construct an image object from a file in the local directory.
-                // ... This file must exist in the solution.
-                Image image = Image.FromFile("BeigeMonitor1.png");
-                // Set the PictureBox image property to this image.
-                // ... Then, adjust its height and width properties.
-                //pictureBox1.Image = image;
-                //pictureBox1.Height = image.Height;
-                //pictureBox1.Width = image.Width;
-            }
-                
+                Text = "BUY",
+                BackColor = Color.Yellow,
+                Dock = DockStyle.Fill
+            };
+            buyButton.Click += ClickedEventHandler;
+
+            Label summa = new Label
+            {
+                Text = "Total sum of pruchase:",
+                BackColor = Color.Orange,
+                Dock = DockStyle.Fill
+            };
+
+            panel.Controls.Add(discButton);
+            panel.Controls.Add(buyButton);
+            panel.Controls.Add(itemsList);
+            panel.Controls.Add(shoppingCartBox);
+            panel.Controls.Add(aboutArticle);
+            panel.Controls.Add(summa);
+            panel.Controls.Add(pic);
+            Controls.Add(panel);
         }
-    } 
+
+        // Metod för att få fram en bild. anropa bilden:CreatPicture(sökvägen till bilden) !! Omg
+        private void CreatePicture(string path)
+        {
+            PictureBox box1 = new PictureBox
+            {
+                Image = Image.FromFile(path),
+                SizeMode = PictureBoxSizeMode.StretchImage,
+                Width = 150,
+                Height = 150
+            };
+            // flow.Controls.Add(box1); fick error på flow "do not exist"
+        }
+
+        void ClickedEventHandler(object sender, EventArgs e)
+        {
+            // Här kan man sätta in kvittot? dvs shoppingCart
+            MessageBox.Show("Sådääär då har du köpt en massa"); 
+        }
+
+        void ClickedDiscountButton(object sender, EventArgs e)
+        {
+            // Summan av (shoppingCart - (det som rabattkoden referar till)) så ska de läggas till i som Pris
+            MessageBox.Show("Braaa nu spara du massa para bror!");
+            // Här kan man göra om för att kunna anv discount. Hejsan!
+        }
+
+
+        // Oklart om detta ens behöver vara med? 
+        static System.Drawing.Image FromFile(string filename) 
+        {
+            Image bastuflotte = Image.FromFile("c:\\bastuflotte.jpg");
+            Image hembrant = Image.FromFile("c:\\hembrant.jpg");
+            Image kyla = Image.FromFile("c:\\Kyla.jpg");
+            Image norrlandsTröja = Image.FromFile("c:\\norrlandströja.jpg");
+            Image dialekt = Image.FromFile("c:\\Norrländska.jpg");
+            Image norrsken = Image.FromFile("c:\\norrsken.jpg");
+            Image ren = Image.FromFile("c:\\ren.jpg");
+            Image skoter = Image.FromFile("c:\\skoter.jpg");
+            Image snö = Image.FromFile("c:\\snö.jpg");
+            Image värme = Image.FromFile("c:\\värme.jpg");
+            Image älg = Image.FromFile("c:\\älg.jpg");            
+
+            return bastuflotte;
+        }
+
+        void Form1_Load(object sender, EventArgs e)
+        {
+            // Construct an image object from a file in the local directory.
+            // ... This file must exist in the solution.
+            Image image = Image.FromFile("BeigeMonitor1.png");
+            // Set the PictureBox image property to this image.
+            // ... Then, adjust its height and width properties.
+            //pictureBox1.Image = image;
+            //pictureBox1.Height = image.Height;
+            //pictureBox1.Width = image.Width;
+        }                
+    }
+} 
 
 
 
