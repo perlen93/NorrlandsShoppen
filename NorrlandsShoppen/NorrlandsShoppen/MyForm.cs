@@ -11,7 +11,7 @@ namespace NorrlandsShoppen
 {
     class MyForm : Form
     {
-        PictureBox box1;
+       PictureBox box1;
 
         public MyForm()
         {
@@ -21,7 +21,7 @@ namespace NorrlandsShoppen
 
                 CreatePicture(name);
             }
-            string path = @"C:\Users\Viktor\source\repos\Projektarbete\Projektarbete\Shop.txt";
+            string path = @"C:\Users\Viktor\source\repos\Projektarbete2\Projektarbete2\Shop.txt";
             List<string> items = new List<string> { };
             items.Add(File.ReadAllText(path));
 
@@ -31,17 +31,14 @@ namespace NorrlandsShoppen
                 itemsList.Width = 635;
                 itemsList.HorizontalScrollbar = true;
             };
-                   
             foreach (string line in items)
             {
                 string[] separatedItems = line.Split(';');
 
-                foreach (string s in separatedItems)
-                {
-                    itemsList.Items.AddRange(separatedItems);
-                }
+                itemsList.Items.AddRange(separatedItems);
             }
-                  int numbersOfItems = 0;
+            int numbersOfItems = 0;
+            
 
             List<string> shoppingCartList = new List<string> { };
             ListBox shoppingCartBox = new ListBox ();
@@ -51,15 +48,11 @@ namespace NorrlandsShoppen
                 shoppingCartBox.Width = 635;
                 shoppingCartBox.HorizontalScrollbar = true;
             }
-            //foreach (string line in shoppingCartList)
-            //{
-            //    string[] separatedItems = line.Split(';');
-            //    for (int i = 0; i <= separatedItems.Length; i++)
-            //    {
-            //        shoppingCartBox.Items.AddRange(separatedItems);
-            //      numbersOfItems = +1;
-            //    }
-            //}
+            foreach (string line in shoppingCartList)
+            {
+               string[] separatedItems = line.Split(';');
+                
+            }
             Console.WriteLine("You have " + numbersOfItems + "in your shoppingcart");
 
             TableLayoutPanel panel = new TableLayoutPanel
@@ -87,7 +80,7 @@ namespace NorrlandsShoppen
                 pic.Size = new Size(210, 110);
                 Controls.Add(pic);
             }
-
+            
             // Detta blir typ rubriken över listboxen med valda artiklar
             panel.Controls.Add(new Label
             {
@@ -207,7 +200,7 @@ namespace NorrlandsShoppen
            // pictureBox1.Width = image.Width;
         }
 
-        // Få in en listbox i någon metod så att den inte behöver skapas separat ?
+        // Få in en clickeventhandle med mousedubleclick på något vänster. Denna ska göra så att när man klickar på en rubrik så kommer info om detta upp.
     }
 }
 
