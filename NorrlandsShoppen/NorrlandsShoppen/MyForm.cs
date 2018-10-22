@@ -11,40 +11,30 @@ namespace NorrlandsShoppen
 {
     class MyForm : Form
     {
-        // Lägger till denna som instans så att alla ovasett om man är i main/myform eller i en metod kan använda den.
         PictureBox box1;
 
         public MyForm()
         {
-         
-            // Samlar bilderna i en array som heter filenames från mappen images
             string[] filenames = Directory.GetFiles("images");
-            // För varje namn i arrayen filenames
             foreach (string name in filenames)
             {
-                // Skapa bilden
+
                 CreatePicture(name);
             }
-
-            // C:\Users\Viktor\source\repos\Projektarbete\Projektarbete\Shop.txt
             string path = @"C:\Users\Viktor\source\repos\Projektarbete\Projektarbete\Shop.txt";
             List<string> items = new List<string> { };
-            // Lägger till artikellistan(sökvägen) i listan som heter articles
             items.Add(File.ReadAllText(path));
 
-            // Listbox för att visa artiklarna, hur få in listan i listboxen?
             ListBox itemsList = new ListBox();
             {
-
                 itemsList.Height = 635;
                 itemsList.Width = 635;
                 itemsList.HorizontalScrollbar = true;
-
             };
-                
+                   
             foreach (string line in items)
             {
-                string[] separatedItems = line.Split('-');
+                string[] separatedItems = line.Split(';');
 
                 foreach (string s in separatedItems)
                 {
@@ -52,12 +42,8 @@ namespace NorrlandsShoppen
                 }
             }
                   int numbersOfItems = 0;
-            // För att få koll på antal artiklar(till kvittot/eller)
 
-            // För att ha en varukorg som de kan fara i
             List<string> shoppingCartList = new List<string> { };
-
-            // För att visa de man lagt till shoppingcart i en box för anv.
             ListBox shoppingCartBox = new ListBox ();
              
             {
