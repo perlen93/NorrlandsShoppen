@@ -164,6 +164,18 @@ namespace NorrlandsShoppen
             Controls.Add(panel);
         }
 
+          // för att slippa skapa ny label varjegång kan vi anropa denna metod och ha texten som parameter
+        private void Label(string text)
+        {
+            Controls.Add(new Label
+            {
+                Text = text,
+                TextAlign = ContentAlignment.TopCenter,
+                BackColor = Color.LightPink,
+                Dock = DockStyle.Fill
+            });
+        }
+
         // Metod för att få fram en bild. anropa bilden:CreatPicture(sökvägen till bilden) !! Omg
         private void CreatePicture(string path)
         {
