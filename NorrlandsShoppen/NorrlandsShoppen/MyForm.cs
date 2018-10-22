@@ -8,21 +8,17 @@ using System.Threading.Tasks;
 using System.IO;
 
 namespace NorrlandsShoppen
-{ 
+{
     class MyForm : Form
-    {
-          // Lägger till denna som instans så att alla ovasett om man är i main/myform eller i en metod kan använda den.
+    {    // Lägger till denna som instans så att alla ovasett om man är i main/myform eller i en metod kan använda den.ev. byta till flow om de är flow vi vill ha.
         TableLayoutPanel table;
         
+        // Metod för alla paneler behövs här. Vad ska vi ha för in parametrar in?
+          
+
         public MyForm()
         {
-            FlowLayoutPanel flow = new FlowLayoutPanel
-            {
-                FlowDirection = FlowDirection.LeftToRight,
-                Dock = DockStyle.Fill
-            };
-            Controls.Add(flow);
-
+          
             // Samlar bilderna i en array som heter filenames från mappen images
             string[] filenames = Directory.GetFiles("images");
             // För varje namn i arrayen filenames
@@ -46,9 +42,9 @@ namespace NorrlandsShoppen
 
                 for (int i = 0; i <= separatedItems.Length; i++)
                 {
-                    separatedItems[i] = "Item" + i;
+                    itemsList.Items.AddRange(separatedItems);
                 }
-                itemsList.Items.AddRange(separatedItems);
+                //itemsList.Items.AddRange(separatedItems);
 
             }
             // För att få koll på antal artiklar(till kvittot/eller)
@@ -65,9 +61,10 @@ namespace NorrlandsShoppen
                 // För varje char i speareradeitemslistan(strängarna) så ska de add to shoppingcartbox 
                 for (int i = 0; i <= separatedItems.Length; i++)  
                 {
-                    separatedItems[i] = "Item" + i;
+                    //separatedItems[i] = "Item" + i;
+                    shoppingCartBox.Items.AddRange(separatedItems);
                 }
-                shoppingCartBox.Items.AddRange(separatedItems);
+                //shoppingCartBox.Items.AddRange(separatedItems);
                 // För att få koll på antal artiklar(till kvittot/eller)
                 numbersOfItems = +1;
             }
