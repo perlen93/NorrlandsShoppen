@@ -21,7 +21,7 @@ namespace NorrlandsShoppen
 
                 CreatePicture(name);
             }
-            string path = @"C:\Users\Viktor\source\repos\Projektarbete2\Projektarbete2\Shop.txt";
+            string path = "Shop.txt";
             List<string> items = new List<string> { };
             items.Add(File.ReadAllText(path));
 
@@ -30,15 +30,19 @@ namespace NorrlandsShoppen
                 itemsList.Height = 635;
                 itemsList.Width = 635;
                 itemsList.HorizontalScrollbar = true;
+                var firstItem = items[0];
+                //   itemsList.Click += itemsList.SelectedIndex;
+                itemsList.DisplayMember = "Name";
+                itemsList.Click += ClickedEventHandler;
+               
             };
+            
             foreach (string line in items)
             {
                 string[] separatedItems = line.Split(';');
 
                 itemsList.Items.AddRange(separatedItems);
             }
-            int numbersOfItems = 0;
-            
 
             List<string> shoppingCartList = new List<string> { };
             ListBox shoppingCartBox = new ListBox ();
@@ -53,6 +57,7 @@ namespace NorrlandsShoppen
                string[] separatedItems = line.Split(';');
                 
             }
+            int numbersOfItems = 0;
             Console.WriteLine("You have " + numbersOfItems + "in your shoppingcart");
 
             TableLayoutPanel panel = new TableLayoutPanel
@@ -82,13 +87,12 @@ namespace NorrlandsShoppen
             }
             
             // Detta blir typ rubriken över listboxen med valda artiklar
-            panel.Controls.Add(new Label
+            ListBox ShoppingCart = new ListBox
             {
-                Text = "Shopping Cart",
-                TextAlign = ContentAlignment.TopCenter,
+                Text = "ShoppingCart",
                 BackColor = Color.LightPink,
                 Dock = DockStyle.Fill
-            });
+            };
 
             // Detta blir rubriken över listboxen med information om varan
             panel.Controls.Add(new Label
@@ -159,6 +163,7 @@ namespace NorrlandsShoppen
             Controls.Add(panel);
             panel.Controls.Add(box1);
             Controls.Add(box1);
+            itemsList.Items.Add(ShoppingCart);
         }
 
         // Metod för att få fram en bild. anropa bilden:CreatPicture(sökvägen till bilden) !! Omg
@@ -177,7 +182,7 @@ namespace NorrlandsShoppen
         void ClickedEventHandler(object sender, EventArgs e)
         {
             // Här kan man sätta in kvittot? dvs shoppingCart
-            MessageBox.Show("Sådääär då har du köpt en massa");
+            MessageBox.Show("Sådääär då har du köpt en massa"); 
         }
 
         void ClickedDiscountButton(object sender, EventArgs e)
@@ -197,10 +202,11 @@ namespace NorrlandsShoppen
            //  ... Then, adjust its height and width properties.
            // pictureBox1.Image = image;
            // pictureBox1.Height = image.Height;
-           // pictureBox1.Width = image.Width;
+           // pictureBox1.Width = image.Width;  
         }
 
-        // Få in en clickeventhandle med mousedubleclick på något vänster. Denna ska göra så att när man klickar på en rubrik så kommer info om detta upp.
+        // Få in en clickeventhandle med mousedubleclick på något vänster. Denna ska göra så att när man klickar på en rubrik så kommer info om detta upp. *DONE*
+        //behöver fixa så att enbart artiklarna visas i listan.
     }
 }
 
