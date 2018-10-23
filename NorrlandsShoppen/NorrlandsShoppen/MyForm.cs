@@ -34,40 +34,49 @@ namespace NorrlandsShoppen
             // Lägger till artikellistan(sökvägen) i listan som heter articles
             items.Add(File.ReadAllText(path)); 
 
-            // Listbox för att visa artiklarna, hur få in listan i listboxen?
-            ListBox itemsList = new ListBox();
+             ListBox itemsList = new ListBox();
+            {
+                itemsList.Height = 635;
+                itemsList.Width = 635;
+                itemsList.HorizontalScrollbar = true;
+            };
+
             foreach (string line in items)
             {
                 string[] separatedItems = line.Split(',');
-
-                for (int i = 0; i <= separatedItems.Length; i++)
-                {
-                    itemsList.Items.AddRange(separatedItems);
-                }
-                //itemsList.Items.AddRange(separatedItems);
-
+                itemsList.Items.AddRange(separatedItems);            
             }
-            // För att få koll på antal artiklar(till kvittot/eller)
             int numbersOfItems = 0;
+            itemsList.Click += ClickedEventHandler;
+            // välj att det som är [1] ska till listboxen för aboutarticle, samt [2] ska in som pris samt [3] ska in som beskrivning
 
-            // För att ha en varukorg som de kan fara i
-            List<string> shoppingCartList = new List<string> { };
 
-            // För att visa de man lagt till shoppingcart i en box för anv.
+             List<string> shoppingCartList = new List<string> { };
+            ListBox shoppingCartBox = new ListBox();
+            {
+                shoppingCartBox.Height = 635;
+                shoppingCartBox.Width = 635;
+                shoppingCartBox.HorizontalScrollbar = true;
+            }
+                    
             ListBox shoppingCartBox = new ListBox{};
-            foreach (string line in shoppingCartList)
+           foreach (string line in shoppingCartList)
             {
                 string[] separatedItems = line.Split(',');
                 // För varje char i speareradeitemslistan(strängarna) så ska de add to shoppingcartbox 
-                for (int i = 0; i <= separatedItems.Length; i++)  
+                for (int i = 0; i <= separatedItems.Length; i++)
                 {
-                    //separatedItems[i] = "Item" + i;
+                    // Lägg till de från separatedItems tills shoppingcartbox   
                     shoppingCartBox.Items.AddRange(separatedItems);
                 }
-                //shoppingCartBox.Items.AddRange(separatedItems);
                 // För att få koll på antal artiklar(till kvittot/eller)
                 numbersOfItems = +1;
             }
+
+            //Det finns en metod för att index från textfilen ska över till den andra via clickeventet, skapa klickevent som säger de index som är valt ska över till shoppingCart
+            // gör detta som en klickmetod
+            // För att visa shoppingCartList för anv.
+
             Console.WriteLine("You have " + numbersOfItems + "in your shoppingcart");
 
             TableLayoutPanel panel = new TableLayoutPanel
@@ -78,23 +87,14 @@ namespace NorrlandsShoppen
                 Dock = DockStyle.Fill
             };
 
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
-
             // Detta blir rubriken över listboxen med artiklar
-            panel.Controls.Add(new Label
+            Label item = new Label
             {
                 Text = "Items",
                 TextAlign = ContentAlignment.TopCenter,
-                BackColor = Color.LightPink,
-                Dock = DockStyle.Fill
-            });
+                BackColor = Color.White,
+                Dock = DockStyle.Top          
+            };
 
             // Detta är rutan för bilden
             PictureBox pic = new PictureBox();
@@ -104,26 +104,32 @@ namespace NorrlandsShoppen
             }
 
             // Detta blir typ rubriken över listboxen med valda artiklar
-            panel.Controls.Add(new Label
+            Label shoppingCart = new Label
             {
                 Text = "Shopping Cart",
                 TextAlign = ContentAlignment.TopCenter,
-                BackColor = Color.LightPink,
-                Dock = DockStyle.Fill
-            });
+                BackColor = Color.White,
+                Dock = DockStyle.Top
+            };
 
-            // Detta blir rubriken över listboxen med information om varan
-            panel.Controls.Add(new Label
-            { 
+             // Label("About your item;");
+
+            Label aboutItem = new Label
+            {
                 Text = "About your item;",
                 TextAlign = ContentAlignment.TopCenter,
-                BackColor = Color.LightPink,
-                Dock = DockStyle.Fill
-            });
+                BackColor = Color.White,
+                Dock = DockStyle.Top
+            };
 
             // Box för att printa ut info o bild om det man väljer
-            ListBox aboutArticle = new ListBox();
-
+            ListBox aboutItemBox = new ListBox();
+            {
+                aboutItemBox.Height = 635;
+                aboutItemBox.Width = 635;
+                aboutItemBox.HorizontalScrollbar = true;
+            }
+          
             panel.Controls.Add(new TextBox
             {
                 Text = "Please enter discount code here",
@@ -154,6 +160,16 @@ namespace NorrlandsShoppen
                 Dock = DockStyle.Fill
             };
 
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
+
+
             panel.Controls.Add(discButton);
             panel.Controls.Add(buyButton);
             panel.Controls.Add(itemsList);
@@ -162,6 +178,9 @@ namespace NorrlandsShoppen
             panel.Controls.Add(summa);
             panel.Controls.Add(pic);
             Controls.Add(panel);
+            itemsList.Controls.Add(item);
+            shoppingCartBox.Controls.Add(shoppingCart);
+            aboutItemBox.Controls.Add(aboutItem); 
         }
 
           // för att slippa skapa ny label varjegång kan vi anropa denna metod och ha texten som parameter
@@ -201,37 +220,9 @@ namespace NorrlandsShoppen
             MessageBox.Show("Braaa nu spara du massa para bror!");
             // Här kan man göra om för att kunna anv discount. Hejsan!
         }
+            // Få in en clickeventhandle med mousedubleclick på något vänster. Denna ska göra så att när man klickar på en rubrik så kommer info om detta upp. 
 
 
-        // Oklart om detta ens behöver vara med? 
-        static System.Drawing.Image FromFile(string filename) 
-        {
-            Image bastuflotte = Image.FromFile("c:\\bastuflotte.jpg");
-            Image hembrant = Image.FromFile("c:\\hembrant.jpg");
-            Image kyla = Image.FromFile("c:\\Kyla.jpg");
-            Image norrlandsTröja = Image.FromFile("c:\\norrlandströja.jpg");
-            Image dialekt = Image.FromFile("c:\\Norrländska.jpg");
-            Image norrsken = Image.FromFile("c:\\norrsken.jpg");
-            Image ren = Image.FromFile("c:\\ren.jpg");
-            Image skoter = Image.FromFile("c:\\skoter.jpg");
-            Image snö = Image.FromFile("c:\\snö.jpg");
-            Image värme = Image.FromFile("c:\\värme.jpg");
-            Image älg = Image.FromFile("c:\\älg.jpg");            
-
-            return bastuflotte;
-        }
-
-        void Form1_Load(object sender, EventArgs e)
-        {
-            // Construct an image object from a file in the local directory.
-            // ... This file must exist in the solution.
-            Image image = Image.FromFile("BeigeMonitor1.png");
-            // Set the PictureBox image property to this image.
-            // ... Then, adjust its height and width properties.
-            //pictureBox1.Image = image;
-            //pictureBox1.Height = image.Height;
-            //pictureBox1.Width = image.Width;
-        }                
     }
 } 
 
