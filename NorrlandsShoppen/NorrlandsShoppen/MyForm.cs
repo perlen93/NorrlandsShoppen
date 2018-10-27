@@ -9,44 +9,91 @@ using System.IO;
 
 namespace NorrlandsShoppen
 {
-    class MyForm : Form
+    class Product
     {
-       PictureBox box1;
+        public string Name;
+        public int Price;
+        public string AboutItem;
+    }
 
+    public class MyForm : Form
+
+    {   // Lägger till instans så ovasett om man är i main/myforom/metod kan nå 
+        PictureBox box1;
+        String curItem;
+        ListBox shoppingCart;
+        // För att slippa skapa ny label varjegång kan vi anropa denna metod och ha texten som parameter 
+        private void Label(string text)
+        {
+            Label label = new Label
+            {
+                Text = text,
+                TextAlign = ContentAlignment.TopCenter,
+                BackColor = Color.LightPink,
+                Dock = DockStyle.Fill
+            };
+        }
+        private void CreatePicture(string path)
+        {
+            PictureBox box1 = new PictureBox
+            {
+                Image = Image.FromFile(path),
+                SizeMode = PictureBoxSizeMode.StretchImage,
+                Width = 150,
+                Height = 150
+            };
+        }
+        void ClickedEventHandler(object sender, EventArgs e)
+        {
+            MessageBox.Show("Här kommer ditt kvitto på ditt köp:" + curItem);
+        }
+        void ClickedDiscountButton(object sender, EventArgs e)
+        {
+            MessageBox.Show("Braaa nu spara du massa para bror!");
+        }
+        void RemoveFromCart(object sender, EventArgs e)
+        {
+            MessageBox.Show("Item have been removed! ");
+        }
+        void ClickedAddToCart(object sender, EventArgs e)
+        {
+            MessageBox.Show("Din vara är lagd till i korgen.");
+
+        }
         public MyForm()
         {
             string[] filenames = Directory.GetFiles("images");
             foreach (string name in filenames)
             {
-
                 CreatePicture(name);
             }
-            string path = "Shop.txt";
-            List<string> items = new List<string> { };
-            items.Add(File.ReadAllText(path));
-
             ListBox itemsList = new ListBox();
             {
                 itemsList.Height = 635;
                 itemsList.Width = 635;
                 itemsList.HorizontalScrollbar = true;
-                var firstItem = items[0];
-                //   itemsList.Click += itemsList.SelectedIndex;
-                itemsList.DisplayMember = "Name";
-                itemsList.Click += ClickedEventHandler;
-               
+                itemsList.DoubleClick += ClickedEventHandler;
             };
-            
-            foreach (string line in items)
+
+            string[] lines = File.ReadAllLines("Shop.txt");
+            List<string> items = new List<string> { };
+
+            foreach (string line in lines)
             {
                 string[] separatedItems = line.Split(';');
 
-                itemsList.Items.AddRange(separatedItems);
+                Product p = new Product
+                {
+                    Name = separatedItems[0],
+                    Price = int.Parse(separatedItems[1]),
+                    AboutItem = separatedItems[2],
+                };
+                items.Add(p.Name);
             }
+            itemsList.Items.AddRange(items.ToArray());
 
             List<string> shoppingCartList = new List<string> { };
-            ListBox shoppingCartBox = new ListBox ();
-             
+            ListBox shoppingCartBox = new ListBox();
             {
                 shoppingCartBox.Height = 635;
                 shoppingCartBox.Width = 635;
@@ -54,12 +101,13 @@ namespace NorrlandsShoppen
             }
             foreach (string line in shoppingCartList)
             {
-               string[] separatedItems = line.Split(';');
-                
-            }
-            int numbersOfItems = 0;
-            Console.WriteLine("You have " + numbersOfItems + "in your shoppingcart");
+                string[] separatedItems = line.Split(',');
 
+                for (int i = 0; i <= separatedItems.Length; i++)
+                {
+                    shoppingCartBox.Items.AddRange(separatedItems);
+                }
+            }
             TableLayoutPanel panel = new TableLayoutPanel
             {
                 RowCount = 6,
@@ -67,60 +115,55 @@ namespace NorrlandsShoppen
                 BackColor = Color.Black,
                 Dock = DockStyle.Fill
             };
-
-            // Detta blir rubriken över listboxen med artiklar
-            panel.Controls.Add(new Label
+            Label item = new Label
             {
                 Text = "Items",
                 TextAlign = ContentAlignment.TopCenter,
-                BackColor = Color.LightPink,
-                Dock = DockStyle.Fill,
-                
-
-              });
-
-            // Detta är rutan för bilden
+                BackColor = Color.White,
+                Dock = DockStyle.Top
+            };
             PictureBox pic = new PictureBox();
             {
                 pic.Size = new Size(210, 110);
                 Controls.Add(pic);
             }
-            
-            // Detta blir typ rubriken över listboxen med valda artiklar
-            ListBox ShoppingCart = new ListBox
+            Label shoppingCart = new Label
             {
-                Text = "ShoppingCart",
-                BackColor = Color.LightPink,
-                Dock = DockStyle.Fill
+                Text = "Shopping Cart",
+                TextAlign = ContentAlignment.TopCenter,
+                BackColor = Color.White,
+                Dock = DockStyle.Top
             };
-
-            // Detta blir rubriken över listboxen med information om varan
-            panel.Controls.Add(new Label
+            void ClickedAddToCart(object sender, EventArgs e)
+            {
+                MessageBox.Show("Din vara är lagd till i korgen.");
+                shoppingCartBox.Items.Add(itemsList.SelectedItem); 
+                itemsList.Items.Remove(shoppingCart);  
+            }
+            void ClickedRemoveFromCart(object sender, EventArgs e)
+            {
+                shoppingCartBox.Items.RemoveAt(shoppingCartBox.SelectedIndex);
+                MessageBox.Show("Item have been removed! ");
+            }
+            Label aboutItem = new Label
             {
                 Text = "About your item;",
                 TextAlign = ContentAlignment.TopCenter,
-                BackColor = Color.LightPink,
-                Dock = DockStyle.Fill
-            });
-
-            // Box för att printa ut info o bild om det man väljer
-            ListBox aboutArticle = new ListBox();
+                BackColor = Color.White,
+                Dock = DockStyle.Top
+            };
+            ListBox aboutItemBox = new ListBox();
             {
-
-
-                aboutArticle.Height = 635;
-                aboutArticle.Width = 635;
-                aboutArticle.HorizontalScrollbar = true;
-
+                aboutItemBox.Height = 635;
+                aboutItemBox.Width = 635;
+                aboutItemBox.HorizontalScrollbar = true;
             }
-
             panel.Controls.Add(new TextBox
             {
                 Text = "Please enter discount code here",
                 BackColor = Color.Red,
                 Dock = DockStyle.Fill
             });
-
             Button discButton = new Button
             {
                 Text = "USE DISCOUNT",
@@ -128,7 +171,6 @@ namespace NorrlandsShoppen
                 Dock = DockStyle.Fill
             };
             discButton.Click += ClickedDiscountButton;
-
             Button buyButton = new Button
             {
                 Text = "BUY",
@@ -136,13 +178,27 @@ namespace NorrlandsShoppen
                 Dock = DockStyle.Fill
             };
             buyButton.Click += ClickedEventHandler;
-
-            Label summa = new Label
+            Label sum = new Label
             {
                 Text = "Total sum of pruchase:",
                 BackColor = Color.Orange,
                 Dock = DockStyle.Fill
             };
+            Button addToCart = new Button
+            {
+                Text = "Add to Cart",
+                BackColor = Color.Pink,
+                Dock = DockStyle.Fill
+            };
+            Button RemoveFromCart = new Button
+            {
+                Text = "Remove From Cart ",
+                BackColor = Color.Pink,
+                Dock = DockStyle.Fill
+            };
+            addToCart.Click += ClickedAddToCart;
+            RemoveFromCart.Click += ClickedRemoveFromCart;
+
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
@@ -153,63 +209,20 @@ namespace NorrlandsShoppen
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
 
             panel.Controls.Add(discButton);
+            panel.Controls.Add(addToCart);
             panel.Controls.Add(buyButton);
             panel.Controls.Add(itemsList);
             panel.Controls.Add(shoppingCartBox);
-            panel.Controls.Add(aboutArticle);
-            panel.Controls.Add(summa);
+            panel.Controls.Add(aboutItemBox);
+            panel.Controls.Add(sum);
             panel.Controls.Add(pic);
-            panel.SetColumnSpan(itemsList, 3);
+            panel.Controls.Add(RemoveFromCart);
             Controls.Add(panel);
+            itemsList.Controls.Add(item);
+            shoppingCartBox.Controls.Add(shoppingCart);
+            aboutItemBox.Controls.Add(aboutItem);
             panel.Controls.Add(box1);
             Controls.Add(box1);
-            itemsList.Items.Add(ShoppingCart);
         }
-
-        // Metod för att få fram en bild. anropa bilden:CreatPicture(sökvägen till bilden) !! Omg
-        private void CreatePicture(string path)
-        {
-            PictureBox box1 = new PictureBox
-            {
-                Image = Image.FromFile(path),
-                SizeMode = PictureBoxSizeMode.StretchImage,
-                Width = 150,
-                Height = 150
-            };
-            // flow.Controls.Add(box1); fick error på flow "do not exist"
-        }
-
-        void ClickedEventHandler(object sender, EventArgs e)
-        {
-            // Här kan man sätta in kvittot? dvs shoppingCart
-            MessageBox.Show("Sådääär då har du köpt en massa"); 
-        }
-
-        void ClickedDiscountButton(object sender, EventArgs e)
-        {
-                // Summan av (shoppingCart - (det som rabattkoden referar till)) så ska de läggas till i som Pris
-                MessageBox.Show("Braaa nu spara du massa para bror!");
-            // Här kan man göra om för att kunna anv discount. Hejsan!
-        }
-
-
-        void Form1_Load(object sender, EventArgs e)
-        {
-           //  Construct an image object from a file in the local directory.
-           //  ... This file must exist in the solution.
-           //Image image = Image.FromFile("BeigeMonitor1.png");
-           //  Set the PictureBox image property to this image.
-           //  ... Then, adjust its height and width properties.
-           // pictureBox1.Image = image;
-           // pictureBox1.Height = image.Height;
-           // pictureBox1.Width = image.Width;  
-        }
-
-        // Få in en clickeventhandle med mousedubleclick på något vänster. Denna ska göra så att när man klickar på en rubrik så kommer info om detta upp. *DONE*
-        //behöver fixa så att enbart artiklarna visas i listan.
     }
 }
-
-
-
-
