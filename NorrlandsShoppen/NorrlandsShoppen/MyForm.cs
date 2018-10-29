@@ -50,18 +50,10 @@ namespace NorrlandsShoppen
         void ClickedDiscountButton(object sender, EventArgs e)
         {
             MessageBox.Show("Braaa nu spara du massa para bror!");
-        }
-        void RemoveFromCart(object sender, EventArgs e)
-        {
-            MessageBox.Show("Item have been removed! ");
-        }
-        void ClickedAddToCart(object sender, EventArgs e)
-        {
-            MessageBox.Show("Din vara är lagd till i korgen.");
-
-        }
+        }    
         public MyForm()
         {
+
             string[] filenames = Directory.GetFiles("images");
             foreach (string name in filenames)
             {
@@ -72,7 +64,6 @@ namespace NorrlandsShoppen
                 itemsList.Height = 635;
                 itemsList.Width = 635;
                 itemsList.HorizontalScrollbar = true;
-                itemsList.DoubleClick += ClickedEventHandler;
             };
 
             string[] lines = File.ReadAllLines("Shop.txt");
@@ -98,7 +89,9 @@ namespace NorrlandsShoppen
                 shoppingCartBox.Height = 635;
                 shoppingCartBox.Width = 635;
                 shoppingCartBox.HorizontalScrollbar = true;
+              
             }
+
             foreach (string line in shoppingCartList)
             {
                 string[] separatedItems = line.Split(',');
@@ -107,6 +100,7 @@ namespace NorrlandsShoppen
                 {
                     shoppingCartBox.Items.AddRange(separatedItems);
                 }
+                
             }
             TableLayoutPanel panel = new TableLayoutPanel
             {
@@ -133,18 +127,8 @@ namespace NorrlandsShoppen
                 TextAlign = ContentAlignment.TopCenter,
                 BackColor = Color.White,
                 Dock = DockStyle.Top
+
             };
-            void ClickedAddToCart(object sender, EventArgs e)
-            {
-                MessageBox.Show("Din vara är lagd till i korgen.");
-                shoppingCartBox.Items.Add(itemsList.SelectedItem); 
-                itemsList.Items.Remove(shoppingCart);  
-            }
-            void ClickedRemoveFromCart(object sender, EventArgs e)
-            {
-                shoppingCartBox.Items.RemoveAt(shoppingCartBox.SelectedIndex);
-                MessageBox.Show("Item have been removed! ");
-            }
             Label aboutItem = new Label
             {
                 Text = "About your item;",
@@ -164,32 +148,31 @@ namespace NorrlandsShoppen
                 BackColor = Color.Red,
                 Dock = DockStyle.Fill
             });
-            Button discButton = new Button
+            void ClickedAddToCart(object sender, EventArgs e)
             {
-                Text = "USE DISCOUNT",
-                BackColor = Color.Pink,
-                Dock = DockStyle.Fill
-            };
-            discButton.Click += ClickedDiscountButton;
-            Button buyButton = new Button
+                MessageBox.Show("Din vara är lagd till i korgen.");
+                shoppingCartBox.Items.Add(itemsList.SelectedItem);
+                itemsList.Items.Remove(shoppingCart);
+            }
+            void ClickedRemoveFromCart(object sender, EventArgs e)
             {
-                Text = "BUY",
-                BackColor = Color.Yellow,
-                Dock = DockStyle.Fill
-            };
-            buyButton.Click += ClickedEventHandler;
-            Label sum = new Label
+               shoppingCartBox.Items.RemoveAt(shoppingCartBox.SelectedIndex);
+                MessageBox.Show("Item have been removed! ");
+            }
+
+            void RemoveAllItemsHandler(object sender, EventArgs e)
             {
-                Text = "Total sum of pruchase:",
-                BackColor = Color.Orange,
-                Dock = DockStyle.Fill
-            };
+                MessageBox.Show("All items has been removed ");
+                shoppingCartBox.Items.Clear();
+            }
+
             Button addToCart = new Button
             {
                 Text = "Add to Cart",
                 BackColor = Color.Pink,
                 Dock = DockStyle.Fill
             };
+
             Button RemoveFromCart = new Button
             {
                 Text = "Remove From Cart ",
@@ -199,15 +182,46 @@ namespace NorrlandsShoppen
             addToCart.Click += ClickedAddToCart;
             RemoveFromCart.Click += ClickedRemoveFromCart;
 
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
+            Button RemoveAll = new Button
+            {
+                Text = "Clear Shoppingcart ",
+                BackColor = Color.Pink,
+                Dock = DockStyle.Fill
+                
 
+            };
+            RemoveAll.Click += RemoveAllItemsHandler;
+
+            Button discButton = new Button
+            {
+                Text = "USE DISCOUNT",
+                BackColor = Color.Pink,
+                Dock = DockStyle.Fill
+            };
+            discButton.Click += ClickedDiscountButton;
+
+            Button buyButton = new Button
+            {
+                Text = "BUY",
+                BackColor = Color.Yellow,
+                Dock = DockStyle.Fill,
+            };
+            buyButton.Click += ClickedEventHandler;
+
+            Label sum = new Label
+            {
+                Text = "Total sum of purchase:",
+                BackColor = Color.Orange,
+                Dock = DockStyle.Fill
+            };
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));  
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
             panel.Controls.Add(discButton);
             panel.Controls.Add(addToCart);
             panel.Controls.Add(buyButton);
@@ -217,12 +231,12 @@ namespace NorrlandsShoppen
             panel.Controls.Add(sum);
             panel.Controls.Add(pic);
             panel.Controls.Add(RemoveFromCart);
-            Controls.Add(panel);
-            itemsList.Controls.Add(item);
-            shoppingCartBox.Controls.Add(shoppingCart);
-            aboutItemBox.Controls.Add(aboutItem);
             panel.Controls.Add(box1);
-            Controls.Add(box1);
+            panel.Controls.Add(RemoveAll);
+            itemsList.Controls.Add(item);
+            Controls.Add(panel);
+            aboutItemBox.Controls.Add(aboutItem);
+            shoppingCartBox.Controls.Add(shoppingCart);
         }
     }
 }
