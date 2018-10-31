@@ -174,6 +174,29 @@ namespace NorrlandsShoppen
                 Dock = DockStyle.Top,
                 TextAlign = ContentAlignment.TopCenter,
             });
+
+            void AboutItemAdd(object sender, EventArgs e)
+            {
+                //click
+                //selecteditems
+                //aboutitembox
+                //  aboutItemBox.Items.Add(itemsList.SelectedItem);
+               
+                aboutItemBox.Items.AddRange(description.ToArray());
+
+
+
+                //if (aboutItemBox.SelectedItems)
+                //{
+
+                //aboutItemBox.Items.Clear();
+
+                //}
+                itemsList.Click += AboutItemAdd;
+            }
+            
+
+
             void ClickedAddToCart(object sender, EventArgs e) 
             { 
                 MessageBox.Show("Din vara är lagd till i korgen.");
