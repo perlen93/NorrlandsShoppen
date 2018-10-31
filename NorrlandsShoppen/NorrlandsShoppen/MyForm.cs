@@ -223,8 +223,8 @@ namespace NorrlandsShoppen
             //    foreach (string line in shoppingCartBox)
             //    {
             //        shoppingCartBox.Items.Add(bajs);
-           }
-            //}
+            }
+            //    }
 
             void ClickedRemoveFromCart(object sender, System.EventArgs e)
             {
@@ -250,28 +250,47 @@ namespace NorrlandsShoppen
             foreach (string name in filenames)
             {
                 CreatePicture(name);
-            }            
-                //panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-                //panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-                //panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-                //panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-                //panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
-                //panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
-                //panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
-                //panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
-                //panel.Controls.Add(discountText);
-                //panel.Controls.Add(discButton);
-                //panel.Controls.Add(addToCart);
-                //panel.Controls.Add(buyButton);
-                //panel.Controls.Add(itemsList);
-                //panel.Controls.Add(shoppingCartBox);
-                //panel.Controls.Add(aboutItemBox);            
-                //panel.Controls.Add(pic);
-                //panel.Controls.Add(RemoveFromCart);
-                //panel.Controls.Add(box1);
-                //panel.Controls.Add(RemoveAll);           
-                //Controls.Add(panel);           
-                //shoppingCartBox.Controls.Add(shoppingCart);
+            }
+
+            void AboutItemAdd(object sender, EventArgs e)
+            {
+                //click
+                //selecteditems
+                //aboutitembox
+                //aboutItemBox.Items.Add(itemsList.SelectedItem);
+
+                aboutItemBox.Items.AddRange(description.ToArray());
+
+                //if (aboutItemBox.SelectedItems)
+                //{
+
+                //aboutItemBox.Items.Clear();
+
+                //}
+                itemsList.Click += AboutItemAdd;
+            }
+
+            //panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            //panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            //panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            //panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            //panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
+            //panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
+            //panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
+            //panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
+            //panel.Controls.Add(discountText);
+            //panel.Controls.Add(discButton);
+            //panel.Controls.Add(addToCart);
+            //panel.Controls.Add(buyButton);
+            //panel.Controls.Add(itemsList);
+            //panel.Controls.Add(shoppingCartBox);
+            //panel.Controls.Add(aboutItemBox);            
+            //panel.Controls.Add(pic);
+            //panel.Controls.Add(RemoveFromCart);
+            //panel.Controls.Add(box1);
+            //panel.Controls.Add(RemoveAll);           
+            //Controls.Add(panel);           
+            //shoppingCartBox.Controls.Add(shoppingCart);
         }
     }
 }
