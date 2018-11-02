@@ -17,7 +17,7 @@ namespace NorrlandsShoppen
         public string AboutItem;
     }
 
-    // anv. objekt för att på samma sätt som med artikellistan få ut objekten fr rabattkoderna
+    // anv. objekt för att på samma sätt som med artikellistan få ut objekten fr rabattkoderna 
     class DiscountCode
     {
         public string Name;
@@ -25,54 +25,152 @@ namespace NorrlandsShoppen
     }
 
     public class MyForm : Form
-    {   
+    {
         public MyForm()
         {
             TableLayoutPanel panel = new TableLayoutPanel
             {
-                RowCount = 5,
-                ColumnCount = 10,
+                RowCount = 10,
+                ColumnCount = 3,
                 BackColor = Color.Black,
                 Dock = DockStyle.Fill,
                 AutoSize = true,
             };
-            Controls.Add(panel);
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20));
+            Controls.Add(panel);           
+
+
+
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
+
+            PictureBox pic = new PictureBox();
+            {
+                pic.Size = new Size(239, 182);
+                CreatePicture(@"bastuflotte.jpg");
+                panel.Controls.Add(pic);               
+            }
+
+            
+            void CreatePicture(string path)
+            {
+                PictureBox box1 = new PictureBox
+                {
+                    Image = Image.FromFile(path),
+                    SizeMode = PictureBoxSizeMode.StretchImage,
+                    Width = 150,
+                    Height = 150
+                };
+            }
+
 
             ListBox itemsList = new ListBox();
             {
-                Title("Items");
+                Text = "NorrlandsShoppen";
                 itemsList.Height = 230;
                 itemsList.Width = 498;
-                itemsList.HorizontalScrollbar = true;
-            };
+                Dock = DockStyle.Top;
 
-            //List<int> discountProcent = new List<int> { }; //hår ligger procentsatsen sparad på rabattkoderna
-            //string[] rows = File.ReadAllLines("TextFile2.txt"); // här är hela databasen m koder o namn
-            //foreach(string line in rows)
-            //{ 
-            //    string[] codes = line.Split(';');
-            //    DiscountCode D = new DiscountCode
-            //    {
-            //        Name = codes[0],
-            //        Procent = int.Parse(codes[1]),
-            //    };
-            //    discountProcent.Add(D.Procent);
-            //}
+                Label item = new Label
+                {
+                    Text = "Items",
+                    TextAlign = ContentAlignment.TopCenter,
+                    BackColor = Color.White,
+                    Dock = DockStyle.Top
+                };
+                itemsList.Controls.Add(item);
+            };
+            panel.Controls.Add(itemsList);
+
+            ListBox shoppingCartBox = new ListBox(); // där varorna hamnar när man tryckt på "Buy" 
+            {
+
+                shoppingCartBox.Height = 230;
+                shoppingCartBox.Width = 407;
+
+                Label shoppingCart = new Label
+                {
+                    Text = "Shopping Cart",
+                    TextAlign = ContentAlignment.TopCenter,
+                    BackColor = Color.White,
+                    Dock = DockStyle.Top
+
+                };
+                shoppingCartBox.Controls.Add(shoppingCart);
+
+            }
+            panel.Controls.Add(shoppingCartBox);
+
+            ListBox aboutItemBox = new ListBox(); // där informationen om varorna hamnar när man klickar på dom 
+            {
+                aboutItemBox.Height = 635;
+                aboutItemBox.Width = 635;
+                aboutItemBox.HorizontalScrollbar = true;
+
+                Label aboutItem = new Label
+                {
+                    Text = "About your item;",
+                    TextAlign = ContentAlignment.TopCenter,
+                    BackColor = Color.White,
+                    Dock = DockStyle.Top
+                };
+                aboutItemBox.Controls.Add(aboutItem);
+            }
+            panel.Controls.Add(aboutItemBox);
+
+            ListBox totalSum = new ListBox(); // där informationen om varorna hamnar när man klickar på dom 
+            {
+                totalSum.Height = 635;
+                totalSum.Width = 635;
+                totalSum.HorizontalScrollbar = true;
+
+                Label totalSumL = new Label
+                {
+                    Text = "Total sum of purchase",
+                    TextAlign = ContentAlignment.TopCenter,
+                    BackColor = Color.White,
+                    Dock = DockStyle.Top
+                };
+                totalSum.Controls.Add(totalSumL);
+            }
+            panel.Controls.Add(aboutItemBox);
+
+            //List<int> discountProcent = new List<int> { }; //hår ligger procentsatsen sparad på rabattkoderna 
+            //string[] rows = File.ReadAllLines("TextFile2.txt"); // här är hela databasen m koder o namn 
+            //foreach(string line in rows) 
+            //{  
+            //    string[] codes = line.Split(';'); 
+            //    DiscountCode D = new DiscountCode 
+            //    { 
+            //        Name = codes[0], 
+            //        Procent = int.Parse(codes[1]), 
+            //    }; 
+            //    discountProcent.Add(D.Procent); 
+            //} 
 
             string[] lines = File.ReadAllLines("Shop.txt");
-            List<string> items = new List<string> {};
-            List<string> description = new List<string> {};
-            List<int> money = new List<int> {};
+            List<string> items = new List<string> { };
+            List<string> description = new List<string> { };
+            List<int> money = new List<int> { };
 
             foreach (string line in lines)
             {
@@ -91,15 +189,6 @@ namespace NorrlandsShoppen
             itemsList.Items.AddRange(items.ToArray());
 
             List<string> shoppingCartList = new List<string> { };
-            ListBox shoppingCartBox = new ListBox();
-            {
-                shoppingCartBox.Height = 230;
-                shoppingCartBox.Width = 407;
-                Title("Shopping Cart");
-            }
-            panel.Controls.Add(shoppingCartBox);
-            
-
             foreach (string line in shoppingCartList)
             {
                 string[] separatedItems = line.Split(',');
@@ -110,24 +199,7 @@ namespace NorrlandsShoppen
                 }
             }
 
-            PictureBox pic = new PictureBox();
-            {
-                pic.Size = new Size(239, 182);
-                panel.Controls.Add(pic);
-            }  
-
-            Title("Total sum of purchase");
-
-            ListBox aboutItemBox = new ListBox();
-            {
-                Title("About your item;");
-                aboutItemBox.Height = 635;
-                aboutItemBox.Width = 635;
-                aboutItemBox.HorizontalScrollbar = true;
-                itemsList.Click += ClickedAboutItem;
-            }
-            panel.Controls.Add(aboutItemBox);
-
+            
             TextBox discountText = new TextBox
             {
                 Text = "Please enter discount code here",
@@ -138,39 +210,14 @@ namespace NorrlandsShoppen
                 TextAlign = HorizontalAlignment.Center,
             };
             panel.Controls.Add(discountText);
-            
-            Button("Add to cart", ClickedAddToCart);            
-            Button("Remove from Cart", ClickedRemoveFromCart);         
-            Button("Clear Shoppingcart", ClickedEventHandler);
-            Button("UsE DISCOUNT", ClickedDiscountButton);                  
+
+            Button("Add to cart", ClickedAddToCart);
+            Button("Remove from Cart", ClickedRemoveFromCart);
+            Button("Clear Shoppingcart", RemoveAllItemsHandler);
+            Button("USE DISCOUNT", ClickedDiscountButton);
             Button("BUY", ClickedEventHandler);
-            Button("Remove all", RemoveAllItemsHandler);
-            
-            void CreatePicture(string path)
-            {
-                PictureBox box1 = new PictureBox
-                {
-                    Image = Image.FromFile(path),
-                    SizeMode = PictureBoxSizeMode.StretchImage,
-                    Width = 150,
-                    Height = 150
-                };
-            }
 
-            //// amount är procenten ec. o,2 som ska in, kan hämtas från en loop i filen där 
-            //int TotalSum(int separatedItems) // shopingcart för att kunna plussa allt därl
-            //{
-            //    int sum = shoppingCartList(separatedItems[1]);
-            //    return sum;
-            //};
-
-            //double CalculateSumAfterDiscount(double amount)
-            //{
-            //    double sum = +SelectedIndex(separatedItems[1]);
-            //    amount =- 1.0;
-            //    return sum * amount;
-            //};
-
+          
             void Button(string text, EventHandler balle)
             {
                 Button button = new Button
@@ -184,23 +231,25 @@ namespace NorrlandsShoppen
                 button.Click += balle;
                 panel.Controls.Add(button);
             };
-            
+
             void Title(string text)
             {
                 Label name = new Label
                 {
                     Text = text,
                     TextAlign = ContentAlignment.TopCenter,
-                    BackColor = Color.LightPink,
+                    BackColor = Color.White,
                     Dock = DockStyle.Fill
                 };
-                //kod för att få den att lägga sig i rätt ruta i layouten ?
+                //kod för att få den att lägga sig i rätt ruta i layouten ? 
                 panel.Controls.Add(name);
-            }            
+                // vill vi anropa denna gör man enl. Title("Total sum of purchase");
+            }
+
 
             void ClickedEventHandler(object sender, EventArgs e)
             {
-               MessageBox.Show("Här kommer ditt kvitto på ditt köp:");
+                MessageBox.Show("Här kommer ditt kvitto på ditt köp:");
             }
 
             void ClickedDiscountButton(object sender, EventArgs e)
@@ -210,21 +259,34 @@ namespace NorrlandsShoppen
 
             void ClickedAboutItem(object sender, EventArgs e)
             {
-                // Här kan man sätta in kvittot? dvs shoppingCart
+                // Här kan man sätta in kvittot? dvs shoppingCart 
                 MessageBox.Show("hej");
-                //  aboutItemView.Items.Add(itemsList.SelectedItem
+                aboutItemBox.Items.Add(itemsList.SelectedItem);
             }
+            itemsList.Click += ClickedAboutItem;
 
-            //List<string> bajs = new List<string> { };
+
+            //List<string> bajs = new List<string> { }; 
             void ClickedAddToCart(object sender, EventArgs e)
             {
-              MessageBox.Show("Din vara är lagd till i korgen.");
-            //   shoppingCartBox.Items.Add(itemsList.SelectedItem); // sätt objeket framför metoden      
-            //    foreach (string line in shoppingCartBox)
-            //    {
-            //        shoppingCartBox.Items.Add(bajs);
+
+                if (itemsList.SelectedIndex <= 0)
+                {
+                    MessageBox.Show("You need to choose an item ");
+                }
+                else
+                {
+                    shoppingCartBox.Items.Add(itemsList.SelectedItem);
+
+                }
+
+                //foreach (string line in items) 
+                //{ 
+                //    shoppingCartBox.Items.Add(aboutItemBox); 
+
+                //    //den söker just nu efter ALLA strings i items. Vi vill enbart ha det som vi klickar på. 
+                //} 
             }
-            //    }
 
             void ClickedRemoveFromCart(object sender, System.EventArgs e)
             {
@@ -245,7 +307,6 @@ namespace NorrlandsShoppen
                 shoppingCartBox.Items.Clear();
             }
 
-
             string[] filenames = Directory.GetFiles("images");
             foreach (string name in filenames)
             {
@@ -254,43 +315,18 @@ namespace NorrlandsShoppen
 
             void AboutItemAdd(object sender, EventArgs e)
             {
-                //click
-                //selecteditems
-                //aboutitembox
-                //aboutItemBox.Items.Add(itemsList.SelectedItem);
 
                 aboutItemBox.Items.AddRange(description.ToArray());
 
-                //if (aboutItemBox.SelectedItems)
-                //{
+                //if (aboutItemBox.SelectedItems) 
+                //{ 
 
-                //aboutItemBox.Items.Clear();
+                //aboutItemBox.Items.Clear(); 
 
-                //}
+                //} 
                 itemsList.Click += AboutItemAdd;
             }
 
-            //panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            //panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            //panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            //panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            //panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
-            //panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
-            //panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
-            //panel.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
-            //panel.Controls.Add(discountText);
-            //panel.Controls.Add(discButton);
-            //panel.Controls.Add(addToCart);
-            //panel.Controls.Add(buyButton);
-            //panel.Controls.Add(itemsList);
-            //panel.Controls.Add(shoppingCartBox);
-            //panel.Controls.Add(aboutItemBox);            
-            //panel.Controls.Add(pic);
-            //panel.Controls.Add(RemoveFromCart);
-            //panel.Controls.Add(box1);
-            //panel.Controls.Add(RemoveAll);           
-            //Controls.Add(panel);           
-            //shoppingCartBox.Controls.Add(shoppingCart);
         }
     }
 }
