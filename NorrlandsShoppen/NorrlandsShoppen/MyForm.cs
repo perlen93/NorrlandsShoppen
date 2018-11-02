@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using NorrlandsShoppen;
+using System.Data.OleDb;
+using System.Data;
 
 namespace NorrlandsShoppen
 {
@@ -28,17 +30,17 @@ namespace NorrlandsShoppen
     {
         public MyForm()
         {
+            DataTable dt;
+
             TableLayoutPanel panel = new TableLayoutPanel
             {
-                RowCount = 10,
+                RowCount = 6,
                 ColumnCount = 3,
                 BackColor = Color.Black,
                 Dock = DockStyle.Fill,
                 AutoSize = true,
             };
-            Controls.Add(panel);           
-
-
+            Controls.Add(panel);     
 
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
@@ -51,6 +53,8 @@ namespace NorrlandsShoppen
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
@@ -63,14 +67,15 @@ namespace NorrlandsShoppen
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
 
-            PictureBox pic = new PictureBox();
-            {
-                pic.Size = new Size(239, 182);
-                CreatePicture(@"bastuflotte.jpg");
-                panel.Controls.Add(pic);               
-            }
+            //PictureBox pic = new PictureBox();
+            //{
+            //    pic.Size = new Size(239, 182);
+            //    CreatePicture(@"bastuflotte.jpg");
+            //    panel.Controls.Add(pic);               
+            //}
 
-            
+            Title("Total Price;");
+
             void CreatePicture(string path)
             {
                 PictureBox box1 = new PictureBox
@@ -80,6 +85,7 @@ namespace NorrlandsShoppen
                     Width = 150,
                     Height = 150
                 };
+                panel.Controls.Add(box1);
             }
 
 
@@ -307,9 +313,13 @@ namespace NorrlandsShoppen
                 shoppingCartBox.Items.Clear();
             }
 
+            // denna loop visar vilka bilder från image som ska visas. Totalsum försvninner från panel av ngn anledning..
+            // Fixa så att Beroden på index man väljer så visas rätt bild till det.(hör i hop med samma grej som med about item
+
             string[] filenames = Directory.GetFiles("images");
             foreach (string name in filenames)
             {
+                //if (selectedIdex  itemsList)
                 CreatePicture(name);
             }
 
