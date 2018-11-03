@@ -17,6 +17,7 @@ namespace NorrlandsShoppen
         public string Name;
         public int Price;
         public string AboutItem;
+        public string Picture;
     }
 
     // anv. objekt för att på samma sätt som med artikellistan få ut objekten fr rabattkoderna 
@@ -29,9 +30,7 @@ namespace NorrlandsShoppen
     public class MyForm : Form
     {
         public MyForm()
-        {
-            DataTable dt;
-
+        {           
             TableLayoutPanel panel = new TableLayoutPanel
             {
                 RowCount = 6,
@@ -65,30 +64,8 @@ namespace NorrlandsShoppen
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
-
-            //PictureBox pic = new PictureBox();
-            //{
-            //    pic.Size = new Size(239, 182);
-            //    CreatePicture(@"bastuflotte.jpg");
-            //    panel.Controls.Add(pic);               
-            //}
-
-            Title("Total Price;");
-
-            void CreatePicture(string path)
-            {
-                PictureBox box1 = new PictureBox
-                {
-                    Image = Image.FromFile(path),
-                    SizeMode = PictureBoxSizeMode.StretchImage,
-                    Width = 150,
-                    Height = 150
-                };
-                panel.Controls.Add(box1);
-            }
-
-
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));         
+            
             ListBox itemsList = new ListBox();
             {
                 Text = "NorrlandsShoppen";
@@ -107,9 +84,8 @@ namespace NorrlandsShoppen
             };
             panel.Controls.Add(itemsList);
 
-            ListBox shoppingCartBox = new ListBox(); // där varorna hamnar när man tryckt på "Buy" 
+            ListBox shoppingCartBox = new ListBox(); 
             {
-
                 shoppingCartBox.Height = 230;
                 shoppingCartBox.Width = 407;
 
@@ -121,11 +97,10 @@ namespace NorrlandsShoppen
                     Dock = DockStyle.Top
 
                 };
-                shoppingCartBox.Controls.Add(shoppingCart);
-
+                shoppingCartBox.Controls.Add(shoppingCart);               
             }
             panel.Controls.Add(shoppingCartBox);
-
+            
             ListBox aboutItemBox = new ListBox(); // där informationen om varorna hamnar när man klickar på dom 
             {
                 aboutItemBox.Height = 635;
@@ -154,11 +129,12 @@ namespace NorrlandsShoppen
                     Text = "Total sum of purchase",
                     TextAlign = ContentAlignment.TopCenter,
                     BackColor = Color.White,
-                    Dock = DockStyle.Top
+                    Dock = DockStyle.Top,                    
                 };
                 totalSum.Controls.Add(totalSumL);
-            }
-            panel.Controls.Add(aboutItemBox);
+                panel.Controls.Add(totalSum);
+                // anropa metoden för totalsum här
+            }            
 
             //List<int> discountProcent = new List<int> { }; //hår ligger procentsatsen sparad på rabattkoderna 
             //string[] rows = File.ReadAllLines("TextFile2.txt"); // här är hela databasen m koder o namn 
@@ -177,20 +153,23 @@ namespace NorrlandsShoppen
             List<string> items = new List<string> { };
             List<string> description = new List<string> { };
             List<int> money = new List<int> { };
+            List<string> picPath = new List<string> { };
 
             foreach (string line in lines)
             {
                 string[] separatedItems = line.Split(';');
-
+                
                 Product p = new Product
                 {
                     Name = separatedItems[0],
                     Price = int.Parse(separatedItems[1]),
                     AboutItem = separatedItems[2],
+                    Picture = separatedItems[3]
                 };
                 items.Add(p.Name);
                 description.Add(p.AboutItem);
                 money.Add(p.Price);
+                picPath.Add(p.Picture);
             }
             itemsList.Items.AddRange(items.ToArray());
 
@@ -204,7 +183,6 @@ namespace NorrlandsShoppen
                     shoppingCartBox.Items.AddRange(separatedItems);
                 }
             }
-
             
             TextBox discountText = new TextBox
             {
@@ -216,14 +194,24 @@ namespace NorrlandsShoppen
                 TextAlign = HorizontalAlignment.Center,
             };
             panel.Controls.Add(discountText);
-
+            Button("USE DISCOUNT", ClickedDiscountButton);
             Button("Add to cart", ClickedAddToCart);
             Button("Remove from Cart", ClickedRemoveFromCart);
-            Button("Clear Shoppingcart", RemoveAllItemsHandler);
-            Button("USE DISCOUNT", ClickedDiscountButton);
+            Button("Clear Shoppingcart", RemoveAllItemsHandler);         
             Button("BUY", ClickedEventHandler);
 
-          
+            void CreatePicture(string path)
+            {
+                PictureBox box1 = new PictureBox
+                {
+                    Image = Image.FromFile(path),
+                    SizeMode = PictureBoxSizeMode.StretchImage,
+                    Width = 150,
+                    Height = 150
+                };
+                panel.Controls.Add(box1);
+            }
+
             void Button(string text, EventHandler balle)
             {
                 Button button = new Button
@@ -249,9 +237,7 @@ namespace NorrlandsShoppen
                 };
                 //kod för att få den att lägga sig i rätt ruta i layouten ? 
                 panel.Controls.Add(name);
-                // vill vi anropa denna gör man enl. Title("Total sum of purchase");
             }
-
 
             void ClickedEventHandler(object sender, EventArgs e)
             {
@@ -264,18 +250,20 @@ namespace NorrlandsShoppen
             }
 
             void ClickedAboutItem(object sender, EventArgs e)
-            {
-                // Här kan man sätta in kvittot? dvs shoppingCart 
-                MessageBox.Show("hej");
+            {                
                 aboutItemBox.Items.Add(itemsList.SelectedItem);
+
+
+                int index = itemsList.SelectedIndex;
+                aboutItemBox.Items.Add(description[index]);
+                string pathToPic = picPath[index];
+
+                CreatePicture(pathToPic);
             }
             itemsList.Click += ClickedAboutItem;
 
-
-            //List<string> bajs = new List<string> { }; 
             void ClickedAddToCart(object sender, EventArgs e)
             {
-
                 if (itemsList.SelectedIndex <= 0)
                 {
                     MessageBox.Show("You need to choose an item ");
@@ -283,15 +271,7 @@ namespace NorrlandsShoppen
                 else
                 {
                     shoppingCartBox.Items.Add(itemsList.SelectedItem);
-
-                }
-
-                //foreach (string line in items) 
-                //{ 
-                //    shoppingCartBox.Items.Add(aboutItemBox); 
-
-                //    //den söker just nu efter ALLA strings i items. Vi vill enbart ha det som vi klickar på. 
-                //} 
+                }              
             }
 
             void ClickedRemoveFromCart(object sender, System.EventArgs e)
@@ -304,39 +284,13 @@ namespace NorrlandsShoppen
                 {
                     shoppingCartBox.Items.RemoveAt(shoppingCartBox.SelectedIndex);
                 }
-
             }
 
             void RemoveAllItemsHandler(object sender, EventArgs e)
             {
                 MessageBox.Show("All items has been removed ");
                 shoppingCartBox.Items.Clear();
-            }
-
-            // denna loop visar vilka bilder från image som ska visas. Totalsum försvninner från panel av ngn anledning..
-            // Fixa så att Beroden på index man väljer så visas rätt bild till det.(hör i hop med samma grej som med about item
-
-            string[] filenames = Directory.GetFiles("images");
-            foreach (string name in filenames)
-            {
-                //if (selectedIdex  itemsList)
-                CreatePicture(name);
-            }
-
-            void AboutItemAdd(object sender, EventArgs e)
-            {
-
-                aboutItemBox.Items.AddRange(description.ToArray());
-
-                //if (aboutItemBox.SelectedItems) 
-                //{ 
-
-                //aboutItemBox.Items.Clear(); 
-
-                //} 
-                itemsList.Click += AboutItemAdd;
-            }
-
+            }         
         }
     }
 }
