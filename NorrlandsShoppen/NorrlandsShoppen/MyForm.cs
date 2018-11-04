@@ -24,7 +24,7 @@ namespace NorrlandsShoppen
     class DiscountCode
     {
         public string Name;
-        public int Procent;
+        public double Procent;
     }
 
     public class MyForm : Form
@@ -35,7 +35,7 @@ namespace NorrlandsShoppen
             {
                 RowCount = 6,
                 ColumnCount = 3,
-                BackColor = Color.Black,
+                BackColor = Color.White,
                 Dock = DockStyle.Fill,
                 AutoSize = true,
             };
@@ -122,11 +122,11 @@ namespace NorrlandsShoppen
             {
                 totalSum.Height = 635;
                 totalSum.Width = 635;
-                totalSum.HorizontalScrollbar = true;
+               // totalSum.HorizontalScrollbar = true;
 
                 Label totalSumL = new Label
                 {
-                    Text = "Total sum of purchase",
+                    Text = "Total sum of purchase:",
                     TextAlign = ContentAlignment.TopCenter,
                     BackColor = Color.White,
                     Dock = DockStyle.Top,                    
@@ -136,18 +136,20 @@ namespace NorrlandsShoppen
                 // anropa metoden för totalsum här
             }            
 
-            //List<int> discountProcent = new List<int> { }; //hår ligger procentsatsen sparad på rabattkoderna 
-            //string[] rows = File.ReadAllLines("TextFile2.txt"); // här är hela databasen m koder o namn 
-            //foreach(string line in rows) 
-            //{  
-            //    string[] codes = line.Split(';'); 
-            //    DiscountCode D = new DiscountCode 
-            //    { 
-            //        Name = codes[0], 
-            //        Procent = int.Parse(codes[1]), 
-            //    }; 
-            //    discountProcent.Add(D.Procent); 
-            //} 
+            List<double> discountProcent = new List<double> { }; //hår ligger procentsatsen sparad på rabattkoderna
+            List<string> discountCode = new List<string> { };
+            string[] rows = File.ReadAllLines("TextFile2.txt"); // här är hela databasen m koder o namn 
+            foreach(string line in rows) 
+            {  
+                string[] codes = line.Split(';'); 
+                DiscountCode D = new DiscountCode 
+                { 
+                    Name = codes[0], 
+                    Procent = double.Parse(codes[1]), 
+                }; 
+                discountProcent.Add(D.Procent);
+                discountCode.Add(D.Name);
+            } 
 
             string[] lines = File.ReadAllLines("Shop.txt");
             List<string> items = new List<string> { };
@@ -174,16 +176,7 @@ namespace NorrlandsShoppen
             itemsList.Items.AddRange(items.ToArray());
 
             List<string> shoppingCartList = new List<string> { };
-            foreach (string line in shoppingCartList)
-            {
-                string[] separatedItems = line.Split(',');
-
-                for (int i = 0; i <= separatedItems.Length; i++)
-                {
-                    shoppingCartBox.Items.AddRange(separatedItems);
-                }
-            }
-            
+          
             TextBox discountText = new TextBox
             {
                 Text = "Please enter discount code here",
@@ -200,17 +193,26 @@ namespace NorrlandsShoppen
             Button("Clear Shoppingcart", RemoveAllItemsHandler);         
             Button("BUY", ClickedEventHandler);
 
-            void CreatePicture(string path)
-            {
-                PictureBox box1 = new PictureBox
-                {
-                    Image = Image.FromFile(path),
-                    SizeMode = PictureBoxSizeMode.StretchImage,
-                    Width = 150,
-                    Height = 150
-                };
-                panel.Controls.Add(box1);
-            }
+            //void CreatePicture(string path)
+            //{
+               
+            //    //if (panel.Contains(Box1))
+            //    //{
+            //    //    panel.Controls.Clear();
+            //    //}
+            //    //else
+            //    //{                    
+            //    //    panel.Controls.Add(box1);
+            //    //}
+            //    //PictureBox box1 = new PictureBox
+            //    //{
+            //    //    Image = Image.FromFile(path),
+            //    //    SizeMode = PictureBoxSizeMode.StretchImage,
+            //    //    Width = 150,
+            //    //    Height = 150
+            //    //};
+            //    //panel.Controls.Add(box1);
+            //}
 
             void Button(string text, EventHandler balle)
             {
@@ -224,33 +226,50 @@ namespace NorrlandsShoppen
                 };
                 button.Click += balle;
                 panel.Controls.Add(button);
-            };
-
-            void Title(string text)
+            };         
+           
+            void ClickedDiscountButton(object sender, EventArgs e)
             {
-                Label name = new Label
+                string yourVar = discountText.Text; // tar insträngen i texboxen o sparar den i yourVar
+                foreach (string line in discountCode)
                 {
-                    Text = text,
-                    TextAlign = ContentAlignment.TopCenter,
-                    BackColor = Color.White,
-                    Dock = DockStyle.Fill
-                };
-                //kod för att få den att lägga sig i rätt ruta i layouten ? 
-                panel.Controls.Add(name);
+                    if (line == yourVar)
+                    {
+
+                        int index = yourVar.LastIndexOfAny;
+                        double amount = 1.0 - discountProcent[index];
+                        double totalPrice = 100;// den totala summan på det som är i shoppingvart
+                        double afterDiscount = totalPrice * amount;
+                        MessageBox.Show("Your new price :"+ afterDiscount);
+                    }
+
+                    else
+                    { 
+                        MessageBox.Show("Your code is not correct!");
+                    }
+                }
+                    MessageBox.Show("Braaa nu spara du massa para bror!");
             }
 
             void ClickedEventHandler(object sender, EventArgs e)
             {
-                MessageBox.Show("Här kommer ditt kvitto på ditt köp:");
+                string yourVar = discountText.Text;
+                if (yourVar == null )
+                {
+                    // visa kvittot
+                    MessageBox.Show("Här kommer ditt kvitto på ditt köp:");
+                }
+                else
+                {
+                    //Visa kvittot med rabatten avdragen
+                    MessageBox.Show("Här kommer ditt kvitto på ditt köp med rabatt:");
+
+                }
+
             }
 
-            void ClickedDiscountButton(object sender, EventArgs e)
-            {
-                MessageBox.Show("Braaa nu spara du massa para bror!");
-            }
-
-            void ClickedAboutItem(object sender, EventArgs e)
-            {                
+        void ClickedAboutItem(object sender, EventArgs e)
+            {   // tidigare anrop på gammal metod CreatePicture(pathToPic);             
                 aboutItemBox.Items.Add(itemsList.SelectedItem);
 
 
@@ -258,7 +277,16 @@ namespace NorrlandsShoppen
                 aboutItemBox.Items.Add(description[index]);
                 string pathToPic = picPath[index];
 
-                CreatePicture(pathToPic);
+                PictureBox box1 = new PictureBox
+                {
+                    //Image = Image.FromFile(path),
+                    SizeMode = PictureBoxSizeMode.StretchImage,
+                    Width = 150,
+                    Height = 150,
+                    Image = Image.FromFile(picPath[index]) // lägger till bilden från listan(Shop.txt)
+                };
+                               
+                panel.Controls.Add(box1);// hur få så den inte printr ut varje bild på nytt, utan bara byter ut den?
             }
             itemsList.Click += ClickedAboutItem;
 
@@ -271,14 +299,20 @@ namespace NorrlandsShoppen
                 else
                 {
                     shoppingCartBox.Items.Add(itemsList.SelectedItem);
-                }              
+                }
+
+                int index = itemsList.SelectedIndex;
+                int totalPrice = +money[index];
+                totalSum.Items.Add(money[index]);
+
+                Console.WriteLine(totalPrice);
             }
 
             void ClickedRemoveFromCart(object sender, System.EventArgs e)
             {
                 if (shoppingCartBox.SelectedIndex <= 0)
                 {
-                    MessageBox.Show("Choose an item to remove! ");
+                    MessageBox.Show("Select an item to remove! ");
                 }
                 else
                 {
@@ -290,7 +324,21 @@ namespace NorrlandsShoppen
             {
                 MessageBox.Show("All items has been removed ");
                 shoppingCartBox.Items.Clear();
-            }         
+            }
+
+            //void Title(string text)
+            //{
+            //    Label name = new Label
+            //    {
+            //        Text = text,
+            //        TextAlign = ContentAlignment.TopCenter,
+            //        BackColor = Color.White,
+            //        Dock = DockStyle.Fill
+            //    };
+            //    //kod för att få den att lägga sig i rätt ruta i layouten ? 
+            //    panel.Controls.Add(name);
+            //}
+
         }
     }
 }
