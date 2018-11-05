@@ -41,6 +41,36 @@ namespace NorrlandsShoppen
             };
             Controls.Add(panel);
 
+            Label item = new Label
+            {
+                Text = "Items",
+                TextAlign = ContentAlignment.BottomCenter,
+                BackColor = Color.White,
+                Dock = DockStyle.Top
+            };
+            panel.Controls.Add(item);
+
+            Label aboutItem = new Label
+            {
+                Text = "About your item;",
+                TextAlign = ContentAlignment.BottomCenter,
+                BackColor = Color.White,
+                Dock = DockStyle.Top
+            };
+            panel.Controls.Add(aboutItem);
+
+            Label shoppingCart = new Label
+            {
+                Text = "Shopping Cart",
+                TextAlign = ContentAlignment.BottomCenter,
+                BackColor = Color.White,
+                Dock = DockStyle.Top
+            };
+            panel.Controls.Add(shoppingCart);
+
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
@@ -50,12 +80,9 @@ namespace NorrlandsShoppen
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 10));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 10));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 10));
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
@@ -73,50 +100,31 @@ namespace NorrlandsShoppen
                 itemsList.Width = 498;
                 Dock = DockStyle.Top;
 
-                Label item = new Label
-                {
-                    Text = "Items",
-                    TextAlign = ContentAlignment.TopCenter,
-                    BackColor = Color.White,
-                    Dock = DockStyle.Top
-                };
-                itemsList.Controls.Add(item);
+                
             };
             panel.Controls.Add(itemsList);
+
+           
 
             ListBox aboutItemBox = new ListBox();
             {
                 aboutItemBox.Height = 635;
                 aboutItemBox.Width = 635;
-                aboutItemBox.HorizontalScrollbar = true;
-
-                Label aboutItem = new Label
-                {
-                    Text = "About your item;",
-                    TextAlign = ContentAlignment.TopCenter,
-                    BackColor = Color.White,
-                    Dock = DockStyle.Top
-                };
-                aboutItemBox.Controls.Add(aboutItem);
+                aboutItemBox.HorizontalScrollbar = true;              
+                //aboutItemBox.Controls.Add(aboutItem);
             }
             panel.Controls.Add(aboutItemBox);
+          
 
             ListBox shoppingCartBox = new ListBox(); 
             {
                 shoppingCartBox.Height = 230;
                 shoppingCartBox.Width = 407;
 
-                Label shoppingCart = new Label
-                {
-                    Text = "Shopping Cart",
-                    TextAlign = ContentAlignment.TopCenter,
-                    BackColor = Color.White,
-                    Dock = DockStyle.Top
-                };
-                shoppingCartBox.Controls.Add(shoppingCart);               
+                              
             }
             panel.Controls.Add(shoppingCartBox);
-
+            
             TextBox itemSum = new TextBox(); // där informationen om varorna hamnar när man klickar på dom 
             {
                 itemSum.Height = 635;
@@ -248,6 +256,7 @@ namespace NorrlandsShoppen
             void ClickedAboutItem(object sender, EventArgs e)
             {
                 int index = itemsList.SelectedIndex;
+                string desc = description[index];
 
                 if (index <= -1)
                 {
@@ -256,17 +265,23 @@ namespace NorrlandsShoppen
                 else if (aboutItemBox.Items.Count >= 1)
                 {
                     aboutItemBox.Items.Clear();
+                    aboutItemBox.Items.Add(desc);
+                    int price = money[index];
+                    itemSum.Text = "Price: " + price.ToString();
+                    string pathToPic = picPath[index];
+                    box1.Image = Image.FromFile(picPath[index]);
                 }
-                else
+                else if (aboutItemBox.Items.Count >= 0)
                 {
                     aboutItemBox.Items.Add(description[index]);
                     int price = money[index];
                     itemSum.Text = "Price: " + price.ToString();
+                    string pathToPic = picPath[index]; 
+                    box1.Image = Image.FromFile(picPath[index]);    
+
                 }
-                string pathToPic = picPath[index];
-                box1.Image = Image.FromFile(picPath[index]);
             }
-            itemsList.Click += ClickedAboutItem;
+                itemsList.Click += ClickedAboutItem;
 
             int total = 0;
             void ClickedAddToCart(object sender, EventArgs e)
