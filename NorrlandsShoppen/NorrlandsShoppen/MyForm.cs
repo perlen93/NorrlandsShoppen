@@ -17,9 +17,7 @@ namespace NorrlandsShoppen
         public string Name;
         public int Price;
         public string AboutItem;
-        public string Picture;
-
-     
+        public string Picture;     
     }
 
     // anv. objekt för att på samma sätt som med artikellistan få ut objekten fr rabattkoderna 
@@ -227,7 +225,7 @@ namespace NorrlandsShoppen
             {
                 int index = itemsList.SelectedIndex;
 
-            string yourVar = discountText.Text; // tar insträngen i texboxen o sparar den i yourVar skriva att indexet är discount.Text;
+               string yourVar = discountText.Text; // tar insträngen i texboxen o sparar den i yourVar skriva att indexet är discount.Text;
                foreach (string line in discountName)
                {
                     if (yourVar == discountText.Text)
@@ -245,25 +243,28 @@ namespace NorrlandsShoppen
                         MessageBox.Show("Your code is not correct!");
                     }
                 
-         }   }
+            }  }
 
             void ClickedAboutItem(object sender, EventArgs e)
             {
                 int index = itemsList.SelectedIndex;
-                int price = money[index];
 
                 if (index <= -1)
                 {
-                    MessageBox.Show("Please choose an item!");
+                    MessageBox.Show("Please choose an item! ");
+                }
+                else if (aboutItemBox.Items.Count >= 1)
+                {
+                    aboutItemBox.Items.Clear();
                 }
                 else
                 {
                     aboutItemBox.Items.Add(description[index]);
+                    int price = money[index];
                     itemSum.Text = "Price: " + price.ToString();
-
-                    string pathToPic = picPath[index];
-                    box1.Image = Image.FromFile(picPath[index]);    
                 }
+                string pathToPic = picPath[index];
+                box1.Image = Image.FromFile(picPath[index]);
             }
             itemsList.Click += ClickedAboutItem;
 
@@ -304,8 +305,21 @@ namespace NorrlandsShoppen
             }      
 
             void ClickedRemoveFromCart(object sender, System.EventArgs e)
-            {
-                int i = itemsList.SelectedIndex;              
+            {              
+                var heej = shoppingCartBox.SelectedItem;
+
+                int i = itemsList.SelectedIndex;
+                int price = money[i]; // priset för varan sparas i ínt price
+                int totalSU = total - price;
+                          
+                foreach(string line in items)
+                {
+                    if (heej == line)
+                    {
+                        
+                    }
+                }
+
                 if (shoppingCartBox.SelectedIndex <= 0)
                 {
                     MessageBox.Show("Select an item to remove!");
@@ -313,12 +327,7 @@ namespace NorrlandsShoppen
                 else
                 {
                     shoppingCartBox.Items.RemoveAt(shoppingCartBox.SelectedIndex);
-                }
-
-
-                int price = money[i]; // priset för varan sparas i ínt price
-                int totalSU = total - price;
-
+                }                              
                 totalPrice.Text = "Total price: " + totalSU.ToString();
             }
 
