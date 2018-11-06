@@ -100,7 +100,7 @@ namespace NorrlandsShoppen
             {
                 aboutItemBox.Height = 635;
                 aboutItemBox.Width = 635;
-                Dock = DockStyle.Fill;
+                Dock = DockStyle.Fill;               
               
 
                 //aboutItemBox.HorizontalScrollbar = true;              
@@ -175,9 +175,7 @@ namespace NorrlandsShoppen
                 money.Add(p.Price);
                 picPath.Add(p.Picture);
             }
-            itemsList.Items.AddRange(items.ToArray());
-
-            List<string> shoppingCartList = new List<string> {};
+            itemsList.Items.AddRange(items.ToArray());          
 
             PictureBox box1 = new PictureBox
             {
@@ -219,7 +217,7 @@ namespace NorrlandsShoppen
 
                 if (clist.Length <= 0)
                 {
-                    MessageBox.Show("In order to buy, you must add an item to cart.");
+                    MessageBox.Show("In order to buy, you must add an item to shoppingcart");
                 }
                 else
                 {
@@ -228,9 +226,8 @@ namespace NorrlandsShoppen
                     // visar kvittot som innehåller namn på varan och totalpriset    
                     MessageBox.Show("Här kommer kvitto på ditt köp: " + "\n" +
                         "\n"  + toDisplay + "\n" + "\n" + totalPrice.ToString() + "\n" +
-                        "\n" + "Tack för att du handlar i vår Shop :D");
-                }
-               
+                        "\n" + "Tack för att du handlar här");
+                }               
                 // Kvitto = totalsumma, o produkter o ev. rabattkod, tack för att du handlar hos oss  
             }
 
