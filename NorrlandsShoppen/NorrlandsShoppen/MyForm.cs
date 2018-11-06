@@ -30,7 +30,7 @@ namespace NorrlandsShoppen
     public class MyForm : Form
     {
         public MyForm()
-        {           
+        {          
             TableLayoutPanel panel = new TableLayoutPanel
             {
                 RowCount = 6,
@@ -41,32 +41,22 @@ namespace NorrlandsShoppen
             };
             Controls.Add(panel);
 
-            Label item = new Label
+            void Label(string text)
             {
-                Text = "Items",
-                TextAlign = ContentAlignment.BottomCenter,
-                BackColor = Color.White,
-                Dock = DockStyle.Top
-            };
-            panel.Controls.Add(item);
+                Label name = new Label
+                {
+                    Text = text,
+                    TextAlign = ContentAlignment.BottomCenter,
+                    BackColor = Color.White,
+                    Dock = DockStyle.Fill
+                };                
+                panel.Controls.Add(name);               
+            }
 
-            Label aboutItem = new Label
-            {
-                Text = "About your item;",
-                TextAlign = ContentAlignment.BottomCenter,
-                BackColor = Color.White,
-                Dock = DockStyle.Top
-            };
-            panel.Controls.Add(aboutItem);
-
-            Label shoppingCart = new Label
-            {
-                Text = "Shopping Cart",
-                TextAlign = ContentAlignment.BottomCenter,
-                BackColor = Color.White,
-                Dock = DockStyle.Top
-            };
-            panel.Controls.Add(shoppingCart);
+            Label("Items:");
+            Label("About your item:");
+            Label("Shopping Cart");
+        
 
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
@@ -106,11 +96,14 @@ namespace NorrlandsShoppen
 
            
 
-            ListBox aboutItemBox = new ListBox();
+            ListView aboutItemBox = new ListView();
             {
                 aboutItemBox.Height = 635;
                 aboutItemBox.Width = 635;
-                aboutItemBox.HorizontalScrollbar = true;              
+                Dock = DockStyle.Fill;
+              
+
+                //aboutItemBox.HorizontalScrollbar = true;              
                 //aboutItemBox.Controls.Add(aboutItem);
             }
             panel.Controls.Add(aboutItemBox);
@@ -129,14 +122,18 @@ namespace NorrlandsShoppen
             {
                 itemSum.Height = 635;
                 itemSum.Width = 635;
-                             
+                itemSum.ReadOnly = true;
+                itemSum.Text = "Price:";
+
                 panel.Controls.Add(itemSum);
             }
             
             TextBox totalPrice = new TextBox(); // där informationen om varorna hamnar när man klickar på dom 
             {
                 totalPrice.Height = 635;
-                totalPrice.Width = 635;              
+                totalPrice.Width = 635;
+                totalPrice.ReadOnly = true;
+                totalPrice.Text = "Total price:";
 
                 panel.Controls.Add(totalPrice);
             }
@@ -205,35 +202,44 @@ namespace NorrlandsShoppen
                 Button button = new Button
                 {
                     Text = text,
-                    BackColor = Color.Yellow,
+                    BackColor = Color.LightBlue,
 
                     Height = 44,
                     Width = 95,
                 };
                 button.Click += handler;
                 panel.Controls.Add(button);
-            };      
-                     
+            };           
+
             void ClickedBuyButton(object sender, EventArgs e)
             {
+                string[] clist = shoppingCartBox.Items.OfType<string>().ToArray();
                 string yourVar = discountText.Text;
-                if (yourVar == null )
+                //if (yourVar != null )
+
+                if (clist.Length <= 0)
                 {
-                    // visa kvittot
-                    MessageBox.Show("Här kommer ditt kvitto på ditt köp:");
+                    MessageBox.Show("In order to buy, you must add an item to cart.");
                 }
                 else
                 {
-                    //Visa kvittot med rabatten avdragen
-                    MessageBox.Show("Här kommer ditt kvitto på ditt köp med rabatt:");
+                    // för att ta varorna som finns i clist(som hämstas fr shoppingcartBox) till en array så de kan visas i messageBox              
+                    string toDisplay = string.Join(Environment.NewLine, clist);
+                    // visar kvittot som innehåller namn på varan och totalpriset    
+                    MessageBox.Show("Här kommer kvitto på ditt köp: " + "\n" +
+                        "\n"  + toDisplay + "\n" + "\n" + totalPrice.ToString() + "\n" +
+                        "\n" + "Tack för att du handlar i vår Shop :D");
                 }
+               
+                // Kvitto = totalsumma, o produkter o ev. rabattkod, tack för att du handlar hos oss  
             }
 
             void ClickedDiscountButton(object sender, EventArgs e)
             {
                 int index = itemsList.SelectedIndex;
 
-               string yourVar = discountText.Text; // tar insträngen i texboxen o sparar den i yourVar skriva att indexet är discount.Text;
+                // tar insträngen i texboxen o sparar den i yourVar skriva att indexet är discount.Text;
+                string yourVar = discountText.Text; 
                foreach (string line in discountName)
                {
                     if (yourVar == discountText.Text)
@@ -262,7 +268,7 @@ namespace NorrlandsShoppen
                 {
                     MessageBox.Show("Please choose an item! ");
                 }
-                else if (aboutItemBox.Items.Count >= 1)
+                else if (aboutItemBox.Items.Count >= 0)
                 {
                     aboutItemBox.Items.Clear();
                     aboutItemBox.Items.Add(desc);
@@ -270,54 +276,30 @@ namespace NorrlandsShoppen
                     itemSum.Text = "Price: " + price.ToString();
                     string pathToPic = picPath[index];
                     box1.Image = Image.FromFile(picPath[index]);
-                }
-                else if (aboutItemBox.Items.Count >= 0)
-                {
-                    aboutItemBox.Items.Add(description[index]);
-                    int price = money[index];
-                    itemSum.Text = "Price: " + price.ToString();
-                    string pathToPic = picPath[index]; 
-                    box1.Image = Image.FromFile(picPath[index]);    
-
-                }
+                }               
             }
                 itemsList.Click += ClickedAboutItem;
 
             int total = 0;
+
             void ClickedAddToCart(object sender, EventArgs e)
             {
+                //throw?? för att undvika 
                 int i = itemsList.SelectedIndex;                               
-                int price = money[i]; // priset för varan sparas i ínt price
+                int price = money[i];
                 int totalSU =total+price;
                 
-                if (i <= -1)
+                if (i == -1)
                 {
                     MessageBox.Show("Please choose an item! ");
                 }
                 else
                 {                   
-                    aboutItemBox.Items.Add(description[i]);
                     totalPrice.Text = "Total price: " + totalSU.ToString();
-                }       
-                           
-                // HÄR MÅSTE VI SKRIVA NGT SOM GÖR ATT DE I SHOPPINGCART SPARAS I EN VARIABEL FÖR TOTALSUMMA
-                // Var price = Items.Sum(t => t.ItemPrice);
-                // Kvitto = totalsumma, o produkter o ev. rabattkod, tack för att du handlar hos oss
-                                
-                //totalSum.Items.Add(money[i]);
-
-                if (itemsList.SelectedIndex <= 0)
-                {
-                    MessageBox.Show("You need to choose an item ");
-                }
-                else
-                {
                     shoppingCartBox.Items.Add(itemsList.SelectedItem);
-                    total += price;                    
-                    //totalSum.Text = totalPrice.ToString();
-                    //Console.WriteLine(totalPrice);
-                }                
-            }      
+                    total += price;
+                }                                          
+            }
 
             void ClickedRemoveFromCart(object sender, System.EventArgs e)
             {              
@@ -335,7 +317,7 @@ namespace NorrlandsShoppen
                     }
                 }
 
-                if (shoppingCartBox.SelectedIndex <= 0)
+                if (shoppingCartBox.SelectedIndex <= -1)
                 {
                     MessageBox.Show("Select an item to remove!");
                 }
@@ -350,6 +332,7 @@ namespace NorrlandsShoppen
             {
                 MessageBox.Show("All items has been removed ");
                 shoppingCartBox.Items.Clear();
+                totalPrice.Text = "Total price: ";
             }
             //C:\Windows\Temp ska de sparas i    
 
