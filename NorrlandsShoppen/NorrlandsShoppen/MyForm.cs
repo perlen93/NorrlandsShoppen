@@ -79,15 +79,13 @@ namespace NorrlandsShoppen
 
            
 
-            ListView aboutItemBox = new ListView();
+            ListBox aboutItemBox = new ListBox();
             {
                 aboutItemBox.Height = 635;
                 aboutItemBox.Width = 635;
-                Dock = DockStyle.Fill;               
-              
-
-                //aboutItemBox.HorizontalScrollbar = true;              
-                //aboutItemBox.Controls.Add(aboutItem);
+                Dock = DockStyle.Fill;                             
+                aboutItemBox.HorizontalScrollbar= true;              
+                
             }
             panel.Controls.Add(aboutItemBox);
           
@@ -191,7 +189,7 @@ namespace NorrlandsShoppen
                 button.Click += handler;
                 panel.Controls.Add(button);
             };
-            int total = 0;
+            double total = 0;
             void ClickedBuyButton(object sender, EventArgs e)
             {
                 string[] clist = shoppingCartBox.Items.OfType<string>().ToArray();
@@ -233,13 +231,15 @@ namespace NorrlandsShoppen
                 {
                     double amount = 1.0 - DP;
                     double priceAfterDiscount = total * amount;
-                    MessageBox.Show("Your new price :" + priceAfterDiscount);
+                    MessageBox.Show("Your new price: " + priceAfterDiscount +". Your discount is: " + DP*100 +" % off.");
+                    totalPrice.Text = "Total price: " + priceAfterDiscount + " SEK";
+                    total = priceAfterDiscount;
+                   // totalPrice.Text = "Total price: " + priceAfterDiscount+" SEK";
                 }
                 else
                 {
                     MessageBox.Show("Your code is not correct!");
-                }            
-                               
+                }                      
             }  
 
             void ClickedAboutItem(object sender, EventArgs e)
@@ -271,7 +271,7 @@ namespace NorrlandsShoppen
                 //throw?? för att undvika 
                 int i = itemsList.SelectedIndex;                               
                 int price = money[i];
-                int totalSU =total+price;
+                double totalSU =total+price;
                 
                 if (i == -1)
                 {
@@ -291,7 +291,7 @@ namespace NorrlandsShoppen
 
                 int i = itemsList.SelectedIndex;
                 int price = money[i]; // priset för varan sparas i ínt price
-                int totalSU = total - price;
+                double totalSU = total - price;
                           
                 foreach(string line in items)
                 {
