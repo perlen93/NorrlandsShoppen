@@ -20,7 +20,6 @@ namespace NorrlandsShoppen
         public string Picture;     
     }
 
-    // anv. objekt för att på samma sätt som med artikellistan få ut objekten fr rabattkoderna 
     class DiscountCode
     {
         public string Name;
@@ -33,7 +32,7 @@ namespace NorrlandsShoppen
         {          
             TableLayoutPanel panel = new TableLayoutPanel
             {
-                RowCount = 6,
+                RowCount = 5,
                 ColumnCount = 3,
                 BackColor = Color.White,
                 Dock = DockStyle.Fill,
@@ -58,30 +57,14 @@ namespace NorrlandsShoppen
             Label("Shopping Cart");
         
 
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 10));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 10));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 10));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 20));         
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));              
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 7));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 23));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 23));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 23));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 23));         
             
             ListBox itemsList = new ListBox();
             {
@@ -180,8 +163,8 @@ namespace NorrlandsShoppen
             PictureBox box1 = new PictureBox
             {
                 SizeMode = PictureBoxSizeMode.StretchImage,
-                Width = 150,
-                Height = 150,
+                Width = 407,
+                Height = 407,
             };
             panel.Controls.Add(box1);
             TextBox discountText = new TextBox
@@ -207,8 +190,8 @@ namespace NorrlandsShoppen
                 };
                 button.Click += handler;
                 panel.Controls.Add(button);
-            };           
-
+            };
+            int total = 0;
             void ClickedBuyButton(object sender, EventArgs e)
             {
                 string[] clist = shoppingCartBox.Items.OfType<string>().ToArray();
@@ -223,43 +206,45 @@ namespace NorrlandsShoppen
                 {
                     // för att ta varorna som finns i clist(som hämstas fr shoppingcartBox) till en array så de kan visas i messageBox              
                     string toDisplay = string.Join(Environment.NewLine, clist);
-                    // visar kvittot som innehåller namn på varan och totalpriset    
-                    MessageBox.Show("Här kommer kvitto på ditt köp: " + "\n" +
-                        "\n"  + toDisplay + "\n" + "\n" + totalPrice.ToString() + "\n" +
-                        "\n" + "Tack för att du handlar här");
+
+                    MessageBox.Show("Here's you're receipt " + "\n" +
+                           "\n" + toDisplay + "\n" + "\n" + "You're total amount to pay is " + total + " Kr" + "\n" +
+                           "\n" + "Thanks for choosing Norrlandsshoppen," + "\n" + "hope to see you again soon for more älg! 😀");
                 }               
                 // Kvitto = totalsumma, o produkter o ev. rabattkod, tack för att du handlar hos oss  
             }
 
             void ClickedDiscountButton(object sender, EventArgs e)
-            {
-                int index = itemsList.SelectedIndex;
-
+            {                
                 // tar insträngen i texboxen o sparar den i yourVar skriva att indexet är discount.Text;
-                string yourVar = discountText.Text; 
-               foreach (string line in discountName)
-               {
-                    if (yourVar == discountText.Text)
-                    {
-                        MessageBox.Show("Hej!");
-                        ////int index = yourVar.LastIndexOfAny;
-                        //double amount = 1.0 - discountProcent[index];
-                        //double totalPrice = 100;// den totala summan på det som är i shoppingvart
-                        //double afterDiscount = totalPrice * amount;
-                        MessageBox.Show("Your new price :");//+ afterDiscount);
-                        break;
-                    }
-                    else
-                    {
-                        MessageBox.Show("Your code is not correct!");
-                    }
-                
-            }  }
+                string yourVar = discountText.Text;
+                double DP = 0;
+
+                for (int io = 0; io < discountName.Count; io++)
+                {
+                    
+                        if (yourVar == discountName[io]) 
+                        {                          
+                         DP = discountProcent[io];                                            
+                         break;                         
+                        }
+                };
+                if (DP > 0)
+                {
+                    double amount = 1.0 - DP;
+                    double priceAfterDiscount = total * amount;
+                    MessageBox.Show("Your new price :" + priceAfterDiscount);
+                }
+                else
+                {
+                    MessageBox.Show("Your code is not correct!");
+                }            
+                               
+            }  
 
             void ClickedAboutItem(object sender, EventArgs e)
             {
                 int index = itemsList.SelectedIndex;
-                string desc = description[index];
 
                 if (index <= -1)
                 {
@@ -268,16 +253,18 @@ namespace NorrlandsShoppen
                 else if (aboutItemBox.Items.Count >= 0)
                 {
                     aboutItemBox.Items.Clear();
+                    string desc = description[index];
                     aboutItemBox.Items.Add(desc);
                     int price = money[index];
                     itemSum.Text = "Price: " + price.ToString();
                     string pathToPic = picPath[index];
                     box1.Image = Image.FromFile(picPath[index]);
-                }               
-            }
-                itemsList.Click += ClickedAboutItem;
+                }
 
-            int total = 0;
+            }
+            itemsList.Click += ClickedAboutItem;
+
+            
 
             void ClickedAddToCart(object sender, EventArgs e)
             {
@@ -327,9 +314,10 @@ namespace NorrlandsShoppen
 
             void RemoveAllItemsHandler(object sender, EventArgs e)
             {
-                MessageBox.Show("All items has been removed ");
                 shoppingCartBox.Items.Clear();
+                totalPrice.Clear();
                 totalPrice.Text = "Total price: ";
+                MessageBox.Show("All items has been removed ");
             }
             //C:\Windows\Temp ska de sparas i    
 
