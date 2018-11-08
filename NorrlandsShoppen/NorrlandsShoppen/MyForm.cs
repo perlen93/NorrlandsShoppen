@@ -44,14 +44,14 @@ namespace NorrlandsShoppen
             Label("About your item:");
             Label("Shopping Cart");
 
-            ListBox itemsList = new ListBox();
+            ListBox itemsBox = new ListBox();
             {
                 Text = "NorrlandsShoppen";
-                itemsList.Height = 500;
-                itemsList.Width = 498;
+                itemsBox.Height = 500;
+                itemsBox.Width = 498;
                 Dock = DockStyle.Top;
             };
-            panel.Controls.Add(itemsList);
+            panel.Controls.Add(itemsBox);
 
             TableLayoutPanel innerpanel = new TableLayoutPanel
             {
@@ -155,14 +155,13 @@ namespace NorrlandsShoppen
                 money.Add(p.Price);
                 picPath.Add(p.Picture);
             }
-            itemsList.Items.AddRange(items.ToArray());
-
-            // Dict med key o values pengar o namn 
-            Dictionary<string, int> dictionary = new Dictionary<string, int> { };
+            itemsBox.Items.AddRange(items.ToArray());
+                       
+            Dictionary<string, int> pricePerItem = new Dictionary<string, int> { };
             for (int numItem = 0; numItem < items.Count; numItem++)
             {
-                dictionary.Add(items[numItem], money[numItem]);
-            }            
+                pricePerItem.Add(items[numItem], money[numItem]);
+            }
             
             PictureBox box1 = new PictureBox
             {
@@ -244,7 +243,6 @@ namespace NorrlandsShoppen
                     MessageBox.Show("Your new price: " + priceAfterDiscount +". Your discount is: " + DP*100 +" % off.");
                     totalPrice.Text = "Total price: " + priceAfterDiscount + " SEK";
                     total = priceAfterDiscount;
-                   // totalPrice.Text = "Total price: " + priceAfterDiscount+" SEK";
                 }
                 else
                 {
@@ -254,7 +252,7 @@ namespace NorrlandsShoppen
 
             void ClickedAboutItem(object sender, EventArgs e)
             {
-                int index = itemsList.SelectedIndex;
+                int index = itemsBox.SelectedIndex;
 
                 if (index <= -1)
                 {
@@ -271,12 +269,12 @@ namespace NorrlandsShoppen
                     box1.Image = Image.FromFile(picPath[index]);
                 }
             }
-            itemsList.Click += ClickedAboutItem;
+            itemsBox.Click += ClickedAboutItem;
 
 
             void ClickedAddToCart(object sender, EventArgs e)
             {
-                int i = itemsList.SelectedIndex;
+                int i = itemsBox.SelectedIndex;
 
                 if (i == -1)
                 {
@@ -287,7 +285,7 @@ namespace NorrlandsShoppen
                     int price = money[i];
                     double totalSU = total + price;
                     totalPrice.Text = "Total price: " + totalSU.ToString();
-                    shoppingCartBox.Items.Add(itemsList.SelectedItem);
+                    shoppingCartBox.Items.Add(itemsBox.SelectedItem);
                     total += price;
 
                     string sPath = @"C:\Windows\Temp\TempText.txt";
@@ -303,19 +301,29 @@ namespace NorrlandsShoppen
 
             void ClickedRemoveFromCart(object sender, System.EventArgs e)
             {
-                int i = itemsList.SelectedIndex;
+                int i = itemsBox.SelectedIndex;
                 if (shoppingCartBox.SelectedIndex <= -1)
                 {
                     MessageBox.Show("Select an item to remove! ");
                 }
                 else
                 {
-                    int price = money[i];
-                    double totalSU = total - price;
-                    totalPrice.Text = "Total price: " + totalSU.ToString();
-                    total -= price;
-                }
-                shoppingCartBox.Items.RemoveAt(shoppingCartBox.SelectedIndex);
+                    foreach (KeyValuePair<string, int> pair in pricePerItem)
+                    {
+                        string hrk = pair.Value.ToString();
+                        string key = pair.Key.ToString();
+                        string hoh = shoppingCartBox.SelectedItem.ToString();
+                        if (hoh == key)
+                        {                           
+                            int value = pricePerItem[key];
+                            total -= value;
+                            break;
+                        }
+                    }
+                    
+                    totalPrice.Text = "Total price: " + total.ToString();                  
+                    shoppingCartBox.Items.RemoveAt(shoppingCartBox.SelectedIndex);
+                }                
             }
 
             void RemoveAllItemsHandler(object sender, EventArgs e)
@@ -330,7 +338,7 @@ namespace NorrlandsShoppen
 
             void LoadCart(object sender, EventArgs e)
             {
-                int i = itemsList.SelectedIndex;
+                int i = itemsBox.SelectedIndex;
                 if (shoppingCartBox.Items.Count > 1)
                 {
                     MessageBox.Show("Please clear you're shoppingcart before loading ");
