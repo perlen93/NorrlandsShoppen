@@ -29,7 +29,8 @@ namespace NorrlandsShoppen
     public class MyForm : Form
     {
         public MyForm()
-        {          
+        {
+
             TableLayoutPanel panel = new TableLayoutPanel
             {
                 RowCount = 4,
@@ -46,10 +47,9 @@ namespace NorrlandsShoppen
             ListBox itemsList = new ListBox();
             {
                 Text = "NorrlandsShoppen";
-                itemsList.Height = 230;
+                itemsList.Height = 500;
                 itemsList.Width = 498;
                 Dock = DockStyle.Top;
-
             };
             panel.Controls.Add(itemsList);
 
@@ -84,33 +84,31 @@ namespace NorrlandsShoppen
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 7));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 6));
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 14));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 14));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 14));          
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 6));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 17));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 17));          
                           
           
 
             ListBox shoppingCartBox = new ListBox(); 
-            {
-                shoppingCartBox.Height = 230;
+            {                
+                shoppingCartBox.Height = 500;
                 shoppingCartBox.Width = 407;
-                
-            }
-            panel.Controls.Add(shoppingCartBox);
+                panel.Controls.Add(shoppingCartBox);
+            }         
             
-            TextBox itemSum = new TextBox(); // där informationen om varorna hamnar när man klickar på dom 
+            TextBox itemPrice = new TextBox();
             {
-                itemSum.Height = 635;
-                itemSum.Width = 635;
-                itemSum.ReadOnly = true;
-                itemSum.Text = "Price:";
-
-                panel.Controls.Add(itemSum);
+                itemPrice.Height = 635;
+                itemPrice.Width = 635;
+                itemPrice.ReadOnly = true;
+                itemPrice.Text = "Price:";
+                panel.Controls.Add(itemPrice);
             }
             
-            TextBox totalPrice = new TextBox(); // där informationen om varorna hamnar när man klickar på dom 
+            TextBox totalPrice = new TextBox(); 
             {
                 totalPrice.Height = 635;
                 totalPrice.Width = 635;
@@ -157,8 +155,15 @@ namespace NorrlandsShoppen
                 money.Add(p.Price);
                 picPath.Add(p.Picture);
             }
-            itemsList.Items.AddRange(items.ToArray());          
+            itemsList.Items.AddRange(items.ToArray());
 
+            // Dict med key o values pengar o namn 
+            Dictionary<string, int> dictionary = new Dictionary<string, int> { };
+            for (int numItem = 0; numItem < items.Count; numItem++)
+            {
+                dictionary.Add(items[numItem], money[numItem]);
+            }            
+            
             PictureBox box1 = new PictureBox
             {
                 SizeMode = PictureBoxSizeMode.StretchImage,
@@ -169,8 +174,8 @@ namespace NorrlandsShoppen
 
             ListView aboutItemBox = new ListView();
             {
-                aboutItemBox.Height = 635;
-                aboutItemBox.Width = 635;
+                aboutItemBox.Height = 490;
+                aboutItemBox.Width = 498;
                 Dock = DockStyle.Fill;
                 aboutItemBox.View = View.List;               
             }
@@ -202,28 +207,24 @@ namespace NorrlandsShoppen
             void ClickedBuyButton(object sender, EventArgs e)
             {
                 string[] clist = shoppingCartBox.Items.OfType<string>().ToArray();
-                string yourVar = discountText.Text;
-                //if (yourVar != null )
+                string yourVar = discountText.Text;                
 
                 if (clist.Length <= 0)
                 {
                     MessageBox.Show("In order to buy, you must add an item to shoppingcart");
                 }
                 else
-                {
-                    // för att ta varorna som finns i clist(som hämstas fr shoppingcartBox) till en array så de kan visas i messageBox              
+                {                              
                     string toDisplay = string.Join(Environment.NewLine, clist);
 
                     MessageBox.Show("Here's you're receipt " + "\n" +
                            "\n" + toDisplay + "\n" + "\n" + "You're total amount to pay is " + total + " Kr" + "\n" +
                            "\n" + "Thanks for choosing Norrlandsshoppen," + "\n" + "hope to see you again soon for more älg! 😀");
                 }               
-                // Kvitto = totalsumma, o produkter o ev. rabattkod, tack för att du handlar hos oss  
             }
 
             void ClickedDiscountButton(object sender, EventArgs e)
-            {                
-                // tar insträngen i texboxen o sparar den i yourVar skriva att indexet är discount.Text;
+            {  
                 string yourVar = discountText.Text;
                 double DP = 0;
 
@@ -235,6 +236,7 @@ namespace NorrlandsShoppen
                          break;                         
                         }
                 };
+
                 if (DP > 0)
                 {
                     double amount = 1.0 - DP;
@@ -264,14 +266,12 @@ namespace NorrlandsShoppen
                     string desc = description[index];
                     aboutItemBox.Items.Add(desc);
                     int price = money[index];
-                    itemSum.Text = "Price: " + price.ToString();
+                    itemPrice.Text = "Price: " + price.ToString();
                     string pathToPic = picPath[index];
                     box1.Image = Image.FromFile(picPath[index]);
                 }
-
             }
             itemsList.Click += ClickedAboutItem;
-
 
 
             void ClickedAddToCart(object sender, EventArgs e)
@@ -295,7 +295,6 @@ namespace NorrlandsShoppen
                     foreach (var item in shoppingCartBox.Items)
                     {
                         SaveFile.WriteLine(item);
-
                     }
                     SaveFile.WriteLine(totalSU);
                     SaveFile.Close();
@@ -363,4 +362,3 @@ namespace NorrlandsShoppen
         }
     }
 }
-
