@@ -32,13 +32,36 @@ namespace NorrlandsShoppen
         {          
             TableLayoutPanel panel = new TableLayoutPanel
             {
-                RowCount = 5,
+                RowCount = 4,
                 ColumnCount = 3,
                 BackColor = Color.White,
                 Dock = DockStyle.Fill,
                 AutoSize = true,
             };
             Controls.Add(panel);
+            Label("Items:");
+            Label("About your item:");
+            Label("Shopping Cart");
+
+            ListBox itemsList = new ListBox();
+            {
+                Text = "NorrlandsShoppen";
+                itemsList.Height = 230;
+                itemsList.Width = 498;
+                Dock = DockStyle.Top;
+
+            };
+            panel.Controls.Add(itemsList);
+
+            TableLayoutPanel innerpanel = new TableLayoutPanel
+            {
+                RowCount = 2,
+                ColumnCount = 1,
+                BackColor = Color.White,
+                Dock = DockStyle.Fill,
+                AutoSize = true,
+            };
+            panel.Controls.Add(innerpanel);
 
             void Label(string text)
             {
@@ -50,52 +73,30 @@ namespace NorrlandsShoppen
                     Dock = DockStyle.Fill
                 };                
                 panel.Controls.Add(name);               
-            }
-
-            Label("Items:");
-            Label("About your item:");
-            Label("Shopping Cart");
-        
-
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));              
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 7));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 23));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 23));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 23));
-            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 23));         
-            
-            ListBox itemsList = new ListBox();
-            {
-                Text = "NorrlandsShoppen";
-                itemsList.Height = 230;
-                itemsList.Width = 498;
-                Dock = DockStyle.Top;
-
-                
-            };
-            panel.Controls.Add(itemsList);
-
+            }           
            
 
-            ListBox aboutItemBox = new ListBox();
-            {
-                aboutItemBox.Height = 635;
-                aboutItemBox.Width = 635;
-                Dock = DockStyle.Fill;                             
-                aboutItemBox.HorizontalScrollbar= true;              
-                
-            }
-            panel.Controls.Add(aboutItemBox);
+            innerpanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+            innerpanel.RowStyles.Add(new RowStyle(SizeType.Percent, 65));
+            innerpanel.RowStyles.Add(new RowStyle(SizeType.Percent, 35));
+
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 7));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 14));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 14));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 14));          
+                          
           
 
             ListBox shoppingCartBox = new ListBox(); 
             {
                 shoppingCartBox.Height = 230;
                 shoppingCartBox.Width = 407;
-
-                              
+                
             }
             panel.Controls.Add(shoppingCartBox);
             
@@ -164,7 +165,17 @@ namespace NorrlandsShoppen
                 Width = 407,
                 Height = 407,
             };
-            panel.Controls.Add(box1);
+            innerpanel.Controls.Add(box1);
+
+            ListView aboutItemBox = new ListView();
+            {
+                aboutItemBox.Height = 635;
+                aboutItemBox.Width = 635;
+                Dock = DockStyle.Fill;
+                aboutItemBox.View = View.List;               
+            }
+            innerpanel.Controls.Add(aboutItemBox);
+
             TextBox discountText = new TextBox
             {
                 Text = "Please enter discount code here",
@@ -182,9 +193,7 @@ namespace NorrlandsShoppen
                 {
                     Text = text,
                     BackColor = Color.LightBlue,
-
-                    Height = 44,
-                    Width = 95,
+                    Dock = DockStyle.Fill,                    
                 };
                 button.Click += handler;
                 panel.Controls.Add(button);
@@ -219,8 +228,7 @@ namespace NorrlandsShoppen
                 double DP = 0;
 
                 for (int io = 0; io < discountName.Count; io++)
-                {
-                    
+                {                    
                         if (yourVar == discountName[io]) 
                         {                          
                          DP = discountProcent[io];                                            
@@ -264,68 +272,94 @@ namespace NorrlandsShoppen
             }
             itemsList.Click += ClickedAboutItem;
 
-            
+
 
             void ClickedAddToCart(object sender, EventArgs e)
             {
-                //throw?? för att undvika 
-                int i = itemsList.SelectedIndex;                               
-                int price = money[i];
-                double totalSU =total+price;
-                
+                int i = itemsList.SelectedIndex;
+
                 if (i == -1)
                 {
-                    MessageBox.Show("Please choose an item! ");
+                    MessageBox.Show("Please choose an item ");
                 }
                 else
-                {                   
+                {
+                    int price = money[i];
+                    double totalSU = total + price;
                     totalPrice.Text = "Total price: " + totalSU.ToString();
                     shoppingCartBox.Items.Add(itemsList.SelectedItem);
                     total += price;
-                }                                          
+
+                    string sPath = @"C:\Windows\Temp\TempText.txt";
+                    System.IO.StreamWriter SaveFile = new System.IO.StreamWriter(sPath); // måste göra Temp mappen icke skrivskyddad.
+                    foreach (var item in shoppingCartBox.Items)
+                    {
+                        SaveFile.WriteLine(item);
+
+                    }
+                    SaveFile.WriteLine(totalSU);
+                    SaveFile.Close();
+                }
             }
 
             void ClickedRemoveFromCart(object sender, System.EventArgs e)
-            {              
-                var heej = shoppingCartBox.SelectedItem;
-
+            {
                 int i = itemsList.SelectedIndex;
-                int price = money[i]; // priset för varan sparas i ínt price
-                double totalSU = total - price;
-                          
-                foreach(string line in items)
-                {
-                    if (heej == line)
-                    {
-                        
-                    }
-                }
-
                 if (shoppingCartBox.SelectedIndex <= -1)
                 {
-                    MessageBox.Show("Select an item to remove!");
+                    MessageBox.Show("Select an item to remove! ");
                 }
                 else
                 {
-                    shoppingCartBox.Items.RemoveAt(shoppingCartBox.SelectedIndex);
-                }                              
-                totalPrice.Text = "Total price: " + totalSU.ToString();
+                    int price = money[i];
+                    double totalSU = total - price;
+                    totalPrice.Text = "Total price: " + totalSU.ToString();
+                    total -= price;
+                }
+                shoppingCartBox.Items.RemoveAt(shoppingCartBox.SelectedIndex);
             }
 
             void RemoveAllItemsHandler(object sender, EventArgs e)
             {
                 shoppingCartBox.Items.Clear();
+                int total2 = 0;
+                total = total2;
                 totalPrice.Clear();
                 totalPrice.Text = "Total price: ";
                 MessageBox.Show("All items has been removed ");
             }
-            //C:\Windows\Temp ska de sparas i    
+
+            void LoadCart(object sender, EventArgs e)
+            {
+                int i = itemsList.SelectedIndex;
+                if (shoppingCartBox.Items.Count > 1)
+                {
+                    MessageBox.Show("Please clear you're shoppingcart before loading ");
+                }
+                else if (i == -1)
+                {
+                    MessageBox.Show("You must first have a Cart to clear it, mate");
+                }
+                else
+                {
+                    int price = money[i];
+                    var Text = File.ReadAllLines(@"C:\Windows\Temp\TempText.txt");
+                    foreach (var line in Text)
+                    {
+                        shoppingCartBox.Items.Add(line);
+                        double totalSU = total + price;
+                        totalPrice.Text = "Total price: " + line;
+                    }
+                    shoppingCartBox.Items.RemoveAt(shoppingCartBox.Items.Count - 1);
+                }
+            }
 
             Button("USE DISCOUNT", ClickedDiscountButton);
             Button("Add to cart", ClickedAddToCart);
             Button("Remove from Cart", ClickedRemoveFromCart);
             Button("Clear Shoppingcart", RemoveAllItemsHandler);
             Button("BUY", ClickedBuyButton);
+            Button("Load ShoppingCart", LoadCart);
         }
     }
 }
