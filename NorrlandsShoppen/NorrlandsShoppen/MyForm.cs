@@ -202,25 +202,75 @@ namespace NorrlandsShoppen
                 button.Click += handler;
                 panel.Controls.Add(button);
             };
+
+            List<string> containe213 = new List<string> { }; 
+
             double total = 0;
             void ClickedBuyButton(object sender, EventArgs e)
             {
+
                 string[] clist = shoppingCartBox.Items.OfType<string>().ToArray();
-                string yourVar = discountText.Text;                
+               // string allItems = string.Join(Environment.NewLine,containe213 );
+                //AppendLine
+
+                if (clist.Length <= 0)
+                {
+                    MessageBox.Show("In order to buy, you must add an item to shoppingcart");
+                }
+
+                //else
+                //{                              
+                //    string toDisplay = string.Join(Environment.NewLine, clist);
+
+                //    MessageBox.Show("Here's you're receipt " + "\n" +
+                //           "\n" + toDisplay + "\n" + "\n" + "You're total amount to pay is " + total + " Kr" + "\n" +
+                //           "\n" + "Thanks for choosing Norrlandsshoppen," + "\n" + "hope to see you again soon for more älg! 😀");
+                //}
+                // få in items i shoppingcart här
+
+              
+
+                foreach (var item in shoppingCartBox.Items)
+                {                  
+
+
+                    foreach (KeyValuePair<string, int> pair in pricePerItem)
+                    {
+                        string hrk = pair.Value.ToString();
+                        string key = pair.Key.ToString();
+                        var test = hrk + key;                        
+
+                        if (key == item.ToString())
+                        {
+                            containe213.Add(key);
+                            containe213.Add(hrk);
+                        }
+                    }
+
+
+                }
 
                 if (clist.Length <= 0)
                 {
                     MessageBox.Show("In order to buy, you must add an item to shoppingcart");
                 }
                 else
-                {                              
-                    string toDisplay = string.Join(Environment.NewLine, clist);
+                {
+                    var message = string.Join(Environment.NewLine, containe213);
+                        MessageBox.Show("Here's you're receipt " + "\n" +
+                        "\n" + message + "\n" + "\n" + "You're total amount to pay is " + total + " Kr" + "\n" +
+                        "\n" + "Thanks for choosing Norrlandsshoppen," + "\n" + "hope to see you again soon for more älg! 😀");
+                       shoppingCartBox.Items.Clear();
+                    totalPrice.Text = "Total price:";
 
-                    MessageBox.Show("Here's you're receipt " + "\n" +
-                           "\n" + toDisplay + "\n" + "\n" + "You're total amount to pay is " + total + " Kr" + "\n" +
-                           "\n" + "Thanks for choosing Norrlandsshoppen," + "\n" + "hope to see you again soon for more älg! 😀");
-                }               
+                }
+
+
+
+                totalPrice.Text = "Total price: " + total.ToString();
+               // shoppingCartBox.Items.RemoveAt(shoppingCartBox.SelectedIndex);
             }
+            
 
             void ClickedDiscountButton(object sender, EventArgs e)
             {  
@@ -289,7 +339,7 @@ namespace NorrlandsShoppen
                     total += price;
 
                     string sPath = @"C:\Windows\Temp\TempText.txt";
-                    System.IO.StreamWriter SaveFile = new System.IO.StreamWriter(sPath); // måste göra Temp mappen icke skrivskyddad.
+                    StreamWriter SaveFile = new StreamWriter(sPath);
                     foreach (var item in shoppingCartBox.Items)
                     {
                         SaveFile.WriteLine(item);
