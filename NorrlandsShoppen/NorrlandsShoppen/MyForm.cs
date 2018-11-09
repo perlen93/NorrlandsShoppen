@@ -261,7 +261,7 @@ namespace NorrlandsShoppen
                         "\n" + message + "\n" + "\n" + "You're total amount to pay is " + total + " Kr" + "\n" +
                         "\n" + "Thanks for choosing Norrlandsshoppen," + "\n" + "hope to see you again soon for more älg! 😀");
                        shoppingCartBox.Items.Clear();
-                    totalPrice.Text = "Total price:";
+                    total = 0;
 
                 }
 
